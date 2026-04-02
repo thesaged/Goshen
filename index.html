@@ -1,0 +1,2435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Goshen Physiotherapy & Rehabilitation Clinic — Business Plan</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<script>
+// ── Goshen Firebase config (written in by Claude) ──
+const firebaseConfig = {
+  apiKey: "AIzaSyCnSsVSz-qllB18UU99-K7pf7hNrbnR7Qk",
+  authDomain: "goshen-clinic.firebaseapp.com",
+  databaseURL: "https://goshen-clinic-default-rtdb.firebaseio.com",
+  projectId: "goshen-clinic",
+  storageBucket: "goshen-clinic.firebasestorage.app",
+  messagingSenderId: "612277538147",
+  appId: "1:612277538147:web:d6e50850f6d077667f9756",
+  measurementId: "G-Y25HGMKEN1"
+};
+firebase.initializeApp(firebaseConfig);
+</script>
+<style>
+:root {
+  --blue:#0D2E6E; --blue-mid:#1a4ba8; --blue-light:#1D6AB0;
+  --blue-faint:#EBF1FB; --blue-pale:#F4F7FD;
+  --gold:#C89B4A; --gold-light:#FDF6E8;
+  --coral:#D85A30; --coral-light:#FAECE7;
+  --ink:#1A1A1A; --ink-soft:#3D3D3D; --muted:#6B7280;
+  --border:#E5E7EB; --surface:#F9FAFB; --white:#FFFFFF;
+  --positive:#1a6e3e; --negative:#D85A30; --warning:#C89B4A; --info:#1a4ba8;
+  --sidebar-w:260px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--surface);color:var(--ink);display:flex;min-height:100vh;font-size:15px;line-height:1.6}
+
+/* SIDEBAR */
+#sidebar{width:var(--sidebar-w);background:var(--blue);position:fixed;top:0;left:0;bottom:0;display:flex;flex-direction:column;z-index:100;overflow-y:auto}
+.sidebar-brand{padding:24px 20px 18px;border-bottom:1px solid rgba(255,255,255,0.1)}
+.brand-tag{font-size:10px;letter-spacing:2px;color:rgba(255,255,255,0.45);text-transform:uppercase;margin-bottom:8px}
+.brand-name{font-family:'DM Serif Display',serif;font-size:17px;color:#fff;line-height:1.25}
+.brand-sub{font-size:11px;color:rgba(255,255,255,0.45);margin-top:3px}
+.sidebar-section{padding:14px 10px 6px}
+.sidebar-section-label{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.32);padding:0 10px;margin-bottom:3px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;cursor:pointer;color:rgba(255,255,255,0.65);font-size:13.5px;transition:all .15s;margin-bottom:1px}
+.nav-item:hover{background:rgba(255,255,255,0.08);color:#fff}
+.nav-item.active{background:rgba(255,255,255,0.13);color:#fff;font-weight:500}
+.nav-icon{width:18px;height:18px;opacity:.7;flex-shrink:0}
+.nav-item.active .nav-icon{opacity:1}
+.sidebar-footer{margin-top:auto;padding:14px 20px;border-top:1px solid rgba(255,255,255,0.08);font-size:11px;color:rgba(255,255,255,0.28)}
+
+/* MAIN */
+#main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column}
+.topbar{background:var(--white);border-bottom:1px solid var(--border);padding:14px 36px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.topbar-title{font-family:'DM Serif Display',serif;font-size:19px;color:var(--ink)}
+.topbar-actions{display:flex;gap:8px}
+.btn{padding:7px 16px;border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .15s;font-weight:500;border:1.5px solid transparent}
+.btn-outline{background:transparent;border-color:var(--border);color:var(--muted)}
+.btn-outline:hover{border-color:var(--blue-mid);color:var(--blue-mid)}
+.btn-primary{background:var(--blue-mid);color:#fff;border-color:var(--blue-mid)}
+.btn-primary:hover{background:var(--blue)}
+.btn-gold{background:var(--gold);color:#fff;border-color:var(--gold)}
+.btn-gold:hover{background:#a07d38}
+.content-area{padding:32px 36px;max-width:1080px}
+
+/* PAGES */
+.page{display:none}.page.active{display:block;animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* SECTION HEADERS */
+.section-header{margin-bottom:26px}
+.section-tag{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--blue-light);font-weight:600;margin-bottom:6px}
+.section-title{font-family:'DM Serif Display',serif;font-size:30px;color:var(--ink);line-height:1.2;margin-bottom:8px}
+.section-desc{font-size:14px;color:var(--muted);max-width:600px;line-height:1.65}
+
+/* METRIC CARDS */
+.metric-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:12px;margin-bottom:24px}
+.metric-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:16px}
+.metric-label{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:7px}
+.metric-value{font-size:24px;font-weight:600;color:var(--ink);line-height:1}
+.metric-sub{font-size:12px;color:var(--muted);margin-top:5px}
+.metric-card.positive .metric-value{color:var(--positive)}
+.metric-card.negative .metric-value{color:var(--negative)}
+.metric-card.warning .metric-value{color:var(--warning)}
+.metric-card.featured{background:var(--blue);border-color:var(--blue)}
+.metric-card.featured .metric-label,.metric-card.featured .metric-value,.metric-card.featured .metric-sub{color:rgba(255,255,255,.9)}
+.metric-card.featured .metric-value{color:#fff}
+
+/* DATA CARDS */
+.data-card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:18px}
+.data-card-title{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:14px;display:flex;align-items:center;justify-content:space-between}
+.data-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--surface);font-size:13.5px;gap:16px}
+.data-row:last-child{border-bottom:none}
+.data-row.subtotal{border-top:2px solid var(--border);padding-top:11px;margin-top:4px}
+.data-row.subtotal .dr-label{font-weight:600;color:var(--ink)}
+.dr-label{color:var(--muted);flex:1}
+.dr-value{font-weight:600;color:var(--ink);white-space:nowrap}
+.dr-value.pos{color:var(--positive)}.dr-value.neg{color:var(--negative)}.dr-value.warn{color:var(--warning)}
+
+/* EDITABLE */
+.editable-number{display:inline-flex;align-items:center;gap:6px;cursor:pointer;padding:2px 8px;border-radius:6px;transition:background .15s;border:1.5px solid transparent}
+.editable-number:hover{background:var(--blue-faint);border-color:var(--blue-light)}
+.editable-number .edit-icon{font-size:11px;color:var(--blue-light);opacity:0;transition:opacity .15s}
+.editable-number:hover .edit-icon{opacity:1}
+
+/* MODAL */
+#edit-modal{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:1000;display:none;align-items:center;justify-content:center}
+#edit-modal.open{display:flex}
+.modal-box{background:var(--white);border-radius:16px;padding:30px;width:440px;max-width:94vw;box-shadow:0 24px 60px rgba(0,0,0,0.18)}
+.modal-title{font-family:'DM Serif Display',serif;font-size:21px;margin-bottom:5px}
+.modal-desc{font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.6}
+.modal-input-wrap{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.modal-prefix{font-size:18px;font-weight:600;color:var(--muted)}
+.modal-input{flex:1;font-size:22px;font-weight:600;padding:10px 14px;border:2px solid var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;color:var(--ink);outline:none;transition:border-color .15s}
+.modal-input:focus{border-color:var(--blue-mid)}
+.modal-hint{font-size:12px;color:var(--muted);margin-bottom:20px}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end}
+
+/* BADGES */
+.badge{font-size:11px;padding:3px 9px;border-radius:20px;font-weight:600;letter-spacing:.3px}
+.badge-high{background:var(--coral-light);color:#8a2211}
+.badge-med{background:#FAEEDA;color:#854F0B}
+.badge-low{background:#E5F5EC;color:#145c35}
+.badge-info{background:var(--blue-faint);color:var(--blue)}
+.badge-blue{background:var(--blue-faint);color:var(--blue-mid)}
+
+/* TIMELINE */
+.timeline-item{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--surface)}
+.timeline-item:last-child{border-bottom:none}
+.timeline-month{font-size:12px;font-weight:600;color:var(--blue-light);min-width:50px;padding-top:2px}
+.timeline-dot{width:10px;height:10px;border-radius:50%;margin-top:5px;flex-shrink:0}
+.timeline-title{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:3px}
+.timeline-desc{font-size:13px;color:var(--muted);line-height:1.55}
+
+/* TWO COLS */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:720px){.two-col{grid-template-columns:1fr}}
+
+/* CHART */
+.chart-wrap{position:relative;width:100%}
+.chart-legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:12px;font-size:12px;color:var(--muted)}
+.legend-dot{width:10px;height:10px;border-radius:2px;display:inline-block;margin-right:4px}
+
+/* TABS */
+.tabs-row{display:flex;gap:6px;margin-bottom:18px;flex-wrap:wrap}
+.tab-btn{padding:7px 15px;border-radius:8px;font-size:13px;border:1.5px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s}
+.tab-btn.active{background:var(--blue-mid);border-color:var(--blue-mid);color:#fff;font-weight:500}
+
+/* MONTH SELECTOR */
+.month-selector{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:16px}
+.month-btn{padding:5px 10px;border-radius:6px;font-size:12px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .12s}
+.month-btn:hover{border-color:var(--blue-light);color:var(--blue-mid)}
+.month-btn.active{background:var(--blue-mid);border-color:var(--blue-mid);color:#fff;font-weight:500}
+
+/* CALLOUT */
+.callout{border-left:4px solid var(--blue-light);background:var(--blue-faint);border-radius:0 10px 10px 0;padding:13px 16px;margin-bottom:18px;font-size:13.5px;color:var(--blue);line-height:1.6}
+.callout.warning{border-color:var(--gold);background:var(--gold-light);color:#5c3d0a}
+.callout.danger{border-color:var(--coral);background:var(--coral-light);color:#6b2211}
+.callout strong{font-weight:600}
+
+/* DIVIDER */
+.divider{border:none;border-top:1px solid var(--border);margin:20px 0}
+
+/* ASSUMPTION PANEL */
+.assumption-panel{background:var(--gold-light);border:1.5px solid var(--gold);border-radius:14px;padding:20px;margin-bottom:22px}
+.ap-title{font-size:14px;font-weight:600;color:#5c3d0a;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.ap-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px}
+.ap-item{background:var(--white);border-radius:10px;padding:11px 14px}
+.ap-item-label{font-size:11px;color:var(--muted);margin-bottom:5px}
+.ap-item-value{font-size:16px;font-weight:600;color:var(--ink);cursor:pointer;display:flex;align-items:center;gap:6px}
+.ap-item-value:hover{color:var(--blue-mid)}
+.edit-pencil{font-size:12px;color:var(--blue-light)}
+
+/* HERO BAND */
+.hero-band{background:linear-gradient(135deg,var(--blue) 0%,var(--blue-mid) 100%);border-radius:16px;padding:30px;color:#fff;margin-bottom:24px;position:relative;overflow:hidden}
+.hero-band::after{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,0.05)}
+.hero-band-title{font-family:'DM Serif Display',serif;font-size:26px;margin-bottom:6px}
+.hero-band-sub{font-size:14px;opacity:.72;max-width:500px;line-height:1.6}
+.hero-band-stats{display:flex;gap:28px;margin-top:20px;flex-wrap:wrap}
+.hero-stat .hs-val{font-size:22px;font-weight:600}
+.hero-stat .hs-label{font-size:10px;opacity:.58;text-transform:uppercase;letter-spacing:1px;margin-top:2px}
+
+/* PRICING */
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:12px;margin-bottom:22px}
+.price-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:18px}
+.price-card.featured{border-color:var(--blue-mid);border-width:2px}
+.price-type{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
+.price-amount{font-family:'DM Serif Display',serif;font-size:26px;color:var(--ink)}
+.price-unit{font-size:12px;color:var(--muted);margin-bottom:9px}
+.price-desc{font-size:13px;color:var(--muted);line-height:1.5}
+.price-saving{font-size:12px;color:var(--positive);font-weight:600;margin-top:6px}
+
+/* CONTRACT */
+.contract-clause{padding:13px;background:var(--surface);border-radius:10px;margin-bottom:9px;border-left:3px solid var(--blue-light)}
+.contract-clause.critical{border-left-color:var(--gold);background:var(--gold-light)}
+.clause-title{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:4px}
+.clause-text{font-size:13px;color:var(--muted);line-height:1.6}
+
+/* GRANT CARDS */
+.grant-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:12px;display:flex;gap:14px}
+.grant-badge{width:42px;height:42px;border-radius:10px;background:var(--blue-faint);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:var(--blue-mid);flex-shrink:0}
+.grant-name{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:3px}
+.grant-amount{font-size:13px;color:var(--positive);font-weight:600;margin-bottom:5px}
+.grant-desc{font-size:13px;color:var(--muted);line-height:1.5}
+
+/* REFERRAL */
+.referral-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:11px;display:flex;align-items:flex-start;gap:12px}
+.ref-icon{width:40px;height:40px;border-radius:10px;background:var(--blue-faint);color:var(--blue-mid);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;font-weight:700}
+.ref-title{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:3px}
+.ref-desc{font-size:13px;color:var(--muted);line-height:1.5}
+.ref-value{font-size:12px;color:var(--positive);font-weight:600;margin-top:4px}
+
+/* DOWNLOAD BAR */
+.download-bar{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;gap:14px;flex-wrap:wrap}
+.download-info .dl-title{font-size:14px;font-weight:600;color:var(--ink)}
+.download-info .dl-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.download-btns{display:flex;gap:8px;flex-wrap:wrap}
+
+/* LOGO ANIMATION */
+@keyframes logoReveal{0%{stroke-dashoffset:200;opacity:0}100%{stroke-dashoffset:0;opacity:1}}
+@keyframes dotPulse{0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(1.3);opacity:1}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.logo-svg .ring{stroke-dasharray:200;stroke-dashoffset:200;animation:logoReveal 1.2s ease forwards .2s}
+.logo-svg .cross-v{stroke-dasharray:60;stroke-dashoffset:60;animation:logoReveal .8s ease forwards .8s}
+.logo-svg .cross-h{stroke-dasharray:60;stroke-dashoffset:60;animation:logoReveal .8s ease forwards 1s}
+.logo-svg .gold-dot{animation:dotPulse 2.5s ease-in-out infinite 1.5s}
+.logo-hero-text{animation:fadeUp .6s ease forwards .4s;opacity:0}
+
+/* SERVICES GRID */
+.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:11px;margin-bottom:20px}
+.service-card{background:var(--white);border:1px solid var(--border);border-radius:11px;padding:15px}
+.service-icon{font-size:20px;margin-bottom:8px}
+.service-title{font-size:13px;font-weight:600;color:var(--blue-mid);margin-bottom:4px}
+.service-desc{font-size:12px;color:var(--muted);line-height:1.5}
+
+/* COMPETITION */
+.comp-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:12px}
+.comp-name{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:5px;display:flex;align-items:center;gap:8px}
+.comp-detail{font-size:13px;color:var(--muted);line-height:1.55}
+
+/* RETAIL */
+.retail-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:20px}
+.retail-card{background:var(--white);border:1px solid var(--border);border-radius:11px;padding:16px}
+.retail-name{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:4px}
+.retail-sell{font-size:13px;color:var(--blue-mid);font-weight:500}
+.retail-margin{font-size:12px;color:var(--positive);margin-top:3px}
+/* RETAIL EDITABLE */
+#retail-catalogue input{transition:border-color .15s;outline:none}
+#retail-catalogue input:focus{border-color:var(--blue-mid) !important}
+#retail-catalogue input[type=number]::-webkit-inner-spin-button{opacity:.4}
+/* PRICING EDITABLE */
+.price-editable{border:1.5px dashed var(--border);border-radius:6px;padding:3px 6px;font-family:inherit;font-size:inherit;font-weight:inherit;color:inherit;background:transparent;width:100%;outline:none;cursor:pointer}
+.price-editable:focus{border-color:var(--blue-mid);background:var(--blue-faint);cursor:text}
+/* TOAST */
+#toast{position:fixed;bottom:28px;right:28px;background:var(--ink);color:#fff;padding:11px 20px;border-radius:10px;font-size:13px;font-weight:500;opacity:0;transform:translateY(10px);transition:all .25s ease;pointer-events:none;z-index:9999;display:flex;align-items:center;gap:8px}
+#toast.show{opacity:1;transform:translateY(0)}
+#toast .t-dot{width:8px;height:8px;border-radius:50%;background:#1a6e3e;flex-shrink:0}
+/* CHECKLIST */
+.checklist-item{display:flex;align-items:flex-start;gap:12px;padding:11px 0;border-bottom:1px solid var(--surface)}
+.checklist-item:last-child{border-bottom:none}
+.checklist-item.done .cl-title{text-decoration:line-through;color:var(--muted)}
+.checklist-item.done .cl-desc{opacity:.5}
+.cl-check{width:20px;height:20px;border-radius:6px;border:2px solid var(--border);flex-shrink:0;cursor:pointer;appearance:none;margin-top:1px;background:transparent;transition:all .15s;accent-color:var(--blue-mid)}
+.cl-check:checked{background:var(--blue-mid);border-color:var(--blue-mid)}
+.cl-label{font-size:13px}
+.cl-title{font-weight:600;color:var(--ink);margin-bottom:2px}
+.cl-desc{font-size:12px;color:var(--muted);line-height:1.5}
+.cl-phase{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--blue-light);font-weight:600;margin:18px 0 6px}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-tag">Business Plan · 2026</div>
+    <div class="brand-name">Goshen Physiotherapy<br>&amp; Rehabilitation Clinic</div>
+    <div class="brand-sub">New Bodija, Ibadan · Confidential</div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Overview</div>
+    <div class="nav-item active" onclick="showPage('overview',this)">
+      <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/></svg>
+      Executive Summary
+    </div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Financials</div>
+    <div class="nav-item" onclick="showPage('sunk',this)">
+      <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4zM18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"/></svg>
+      Startup Costs
+    </div>
+    <div class="nav-item" onclick="showPage('ops',this)">
+      <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm2 10a1 1 0 10-2 0v3a1 1 0 102 0v-3zm2-3a1 1 0 011 1v5a1 1 0 11-2 0v-5a1 1 0 011-1zm4-1a1 1 0 10-2 0v7a1 1 0 102 0V8z" clip-rule="evenodd"/></svg>
+      Monthly Operations
+    </div>
+    <div class="nav-item" onclick="showPage('runway',this)">
+      <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/></svg>
+      24-Month Runway
+    </div>
+    <div class="nav-item" onclick="showPage('finmodel',this)">
+      <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11 4a1 1 0 10-2 0v4a1 1 0 102 0V7zm-3 1a1 1 0 10-2 0v3a1 1 0 102 0V8zM8 9a1 1 0 00-2 0v2a1 1 0 102 0V9z" clip-rule="evenodd"/></svg>
+      Financial Model
+    </div>
+    <div class="nav-item" onclick="showPage('projections',this)">
+      <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"/><path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"/></svg>
+      Profit Projections
+    </div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Strategy</div>
+    <div class="nav-item" onclick="showPage('pricing',this)">
+      <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A.997.997 0 012 10V5a3 3 0 013-3h5c.256 0 .512.098.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/></svg>
+      Pricing Strategy
+    </div>
+    <div class="nav-item" onclick="showPage('retail',this)">
+      <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3z"/></svg>
+      Retail Revenue
+    </div>
+    <div class="nav-item" onclick="showPage('referral',this)">
+      <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"/></svg>
+      Referral Network
+    </div>
+    <div class="nav-item" onclick="showPage('competition',this)">
+      <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11 4a1 1 0 10-2 0v4a1 1 0 102 0V7zm-3 1a1 1 0 10-2 0v3a1 1 0 102 0V8zM8 9a1 1 0 00-2 0v2a1 1 0 102 0V9z" clip-rule="evenodd"/></svg>
+      Competition
+    </div>
+    <div class="nav-item" onclick="showPage('marketing',this)">
+      <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zm0 16a3 3 0 01-3-3h6a3 3 0 01-3 3z"/></svg>
+      Marketing Plan
+    </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Documents</div>
+    <div class="nav-item" onclick="showPage('contracts',this)">
+      <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"/></svg>
+      Employment Contracts
+    </div>
+    <div class="nav-item" onclick="showPage('grants',this)">
+      <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z"/><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clip-rule="evenodd"/></svg>
+      Grant Strategy
+    </div>
+    <div class="nav-item" onclick="showPage('launch',this)">
+      <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clip-rule="evenodd"/></svg>
+      Launch Playbook
+    </div>
+    <div class="nav-item" onclick="showPage('settings',null)">
+      <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"/></svg>
+      Edit Assumptions
+    </div>
+  </div>
+
+  <div class="sidebar-footer">Confidential · For owner review only<br>Prepared April 2026</div>
+</nav>
+
+<!-- MAIN -->
+<div id="main">
+  <div class="topbar">
+    <div class="topbar-title" id="topbar-title">Executive Summary</div>
+    <div class="topbar-actions">
+      <div id="sync-indicator" style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);padding:0 8px">
+        <span id="sync-dot" style="width:8px;height:8px;border-radius:50%;background:#E5E7EB;flex-shrink:0"></span>
+        <span id="sync-label">Not connected</span>
+      </div>
+      <button class="btn btn-outline" onclick="showPage('settings',null)">⚙ Edit Assumptions</button>
+      <button class="btn btn-gold" onclick="window.print()">↓ Download PDF</button>
+    </div>
+  </div>
+
+  <div class="content-area">
+
+<!-- ═══════════ OVERVIEW ═══════════ -->
+<div id="page-overview" class="page active">
+
+  <!-- ANIMATED LOGO HERO -->
+  <div style="background:linear-gradient(135deg,var(--blue) 0%,var(--blue-mid) 100%);border-radius:16px;padding:36px;color:#fff;margin-bottom:24px;position:relative;overflow:hidden">
+    <div style="position:absolute;top:-50px;right:-50px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,0.04)"></div>
+    <div style="position:absolute;bottom:-60px;right:60px;width:160px;height:160px;border-radius:50%;background:rgba(200,155,74,0.08)"></div>
+
+    <div style="display:flex;align-items:center;gap:22px;margin-bottom:20px">
+      <!-- ANIMATED LOGO -->
+      <svg class="logo-svg" width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle class="ring" cx="36" cy="36" r="32" stroke="rgba(255,255,255,0.35)" stroke-width="1.5" fill="none"/>
+        <circle cx="36" cy="36" r="28" fill="rgba(255,255,255,0.06)"/>
+        <rect class="cross-v" x="33" y="16" width="6" height="40" rx="3" fill="white"/>
+        <rect class="cross-h" x="16" y="33" width="40" height="6" rx="3" fill="white"/>
+        <circle class="gold-dot" cx="36" cy="36" r="5" fill="#C89B4A"/>
+        <circle cx="36" cy="36" r="2.5" fill="white"/>
+      </svg>
+      <div class="logo-hero-text">
+        <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:4px">Business Plan · 2026</div>
+        <div style="font-family:'DM Serif Display',serif;font-size:26px;line-height:1.15">Goshen Physiotherapy<br>&amp; Rehabilitation Clinic</div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.55);margin-top:4px">No. 12 Are Avenue, New Bodija, Ibadan · 08034051960</div>
+      </div>
+    </div>
+
+    <div style="font-size:14px;opacity:.7;max-width:540px;line-height:1.7;margin-bottom:20px">A patient-centered physiotherapy clinic in New Bodija, Ibadan — built on clinical excellence, measurable outcomes, and a commitment to putting every patient's voice at the center of their recovery.</div>
+
+    <div style="display:flex;gap:28px;flex-wrap:wrap">
+      <div><div style="font-size:22px;font-weight:600">₦12–18M</div><div style="font-size:10px;opacity:.55;text-transform:uppercase;letter-spacing:1px;margin-top:2px">Year 1 Revenue</div></div>
+      <div><div style="font-size:22px;font-weight:600">Month 4–5</div><div style="font-size:10px;opacity:.55;text-transform:uppercase;letter-spacing:1px;margin-top:2px">Breakeven</div></div>
+      <div><div style="font-size:22px;font-weight:600">₦2.85M</div><div style="font-size:10px;opacity:.55;text-transform:uppercase;letter-spacing:1px;margin-top:2px">Startup Capital</div></div>
+      <div><div style="font-size:22px;font-weight:600">5–20%</div><div style="font-size:10px;opacity:.55;text-transform:uppercase;letter-spacing:1px;margin-top:2px">Recovery Improvement</div></div>
+    </div>
+  </div>
+
+  <div class="metric-row">
+    <div class="metric-card featured"><div class="metric-label">Year 1 Revenue Target</div><div class="metric-value">₦12–18M</div><div class="metric-sub">Base scenario</div></div>
+    <div class="metric-card positive"><div class="metric-label">Year 1 Net Profit</div><div class="metric-value">₦1–3M</div><div class="metric-sub">After all costs</div></div>
+    <div class="metric-card warning"><div class="metric-label">Startup Investment</div><div class="metric-value">₦2.85M</div><div class="metric-sub">Recommended</div></div>
+    <div class="metric-card"><div class="metric-label">Breakeven Month</div><div class="metric-value">Month 4–5</div><div class="metric-sub">Realistic ramp</div></div>
+  </div>
+
+  <div class="two-col" style="margin-bottom:18px">
+    <div class="data-card">
+      <div class="data-card-title">Year 1 revenue trajectory</div>
+      <div class="chart-wrap" style="height:200px"><canvas id="overviewChart"></canvas></div>
+      <div class="chart-legend">
+        <span><span class="legend-dot" style="background:#1a4ba8"></span>Revenue</span>
+        <span><span class="legend-dot" style="background:#C89B4A"></span>Net profit</span>
+      </div>
+    </div>
+    <div class="data-card">
+      <div class="data-card-title">The Goshen difference</div>
+      <div class="data-row"><span class="dr-label">Same-week appointments</span><span class="badge badge-info">Core USP</span></div>
+      <div class="data-row"><span class="dr-label">Written treatment plan — every patient</span><span class="badge badge-blue">Visible quality</span></div>
+      <div class="data-row"><span class="dr-label">Progress reports at session 3 &amp; 6</span><span class="badge badge-blue">Retention</span></div>
+      <div class="data-row"><span class="dr-label">5–20% faster recovery tracked</span><span class="badge badge-low">Grant narrative</span></div>
+      <div class="data-row"><span class="dr-label">WhatsApp booking, 2-hr response</span><span class="badge badge-blue">Trust signal</span></div>
+      <div class="data-row"><span class="dr-label">Consistent same-therapist care</span><span class="badge badge-blue">Loyalty driver</span></div>
+    </div>
+  </div>
+
+  <div class="data-card">
+    <div class="data-card-title">Services portfolio</div>
+    <div class="services-grid">
+      <div class="service-card"><div class="service-title">Musculoskeletal</div><div class="service-desc">Back, neck, shoulder, knee, arthritis, post-fracture, work injuries</div></div>
+      <div class="service-card"><div class="service-title">Neurological Rehab</div><div class="service-desc">Stroke recovery, Parkinson's, balance disorders, walking difficulties</div></div>
+      <div class="service-card"><div class="service-title">Sports Rehabilitation</div><div class="service-desc">Muscle tears, ligament injuries, tendinopathy, return-to-sport</div></div>
+      <div class="service-card"><div class="service-title">Pain Management</div><div class="service-desc">Chronic back/neck pain, sciatica, nerve compression, post-surgical</div></div>
+      <div class="service-card"><div class="service-title">Geriatric Care</div><div class="service-desc">Fall prevention, mobility, independence, age-related conditions</div></div>
+      <div class="service-card"><div class="service-title">Women's Health</div><div class="service-desc">Pelvic floor, post-natal, pregnancy-related pain, bladder control</div></div>
+      <div class="service-card" style="border-color:var(--gold);background:var(--gold-light)"><div class="service-title" style="color:var(--gold)">Corporate Wellness</div><div class="service-desc">Ergonomic audits, workshops, employee health programs</div></div>
+    </div>
+  </div>
+
+  <div class="two-col" style="margin-bottom:18px">
+    <div class="data-card">
+      <div class="data-card-title">Mission</div>
+      <p style="font-size:14px;color:var(--muted);line-height:1.8;margin-bottom:16px">To provide exceptional physiotherapy care that respects each patient's unique needs, preferences, and goals — empowering them to achieve optimal physical function and quality of life.</p>
+      <div style="border-top:1px solid var(--border);padding-top:14px">
+        <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:8px">Our values</div>
+        <div class="data-row"><span class="dr-label">Respect</span><span style="font-size:12px;color:var(--muted)">Honour every patient's story</span></div>
+        <div class="data-row"><span class="dr-label">Excellence</span><span style="font-size:12px;color:var(--muted)">Highest clinical standards</span></div>
+        <div class="data-row"><span class="dr-label">Partnership</span><span style="font-size:12px;color:var(--muted)">Decisions made together</span></div>
+        <div class="data-row"><span class="dr-label">Empowerment</span><span style="font-size:12px;color:var(--muted)">Patients lead their recovery</span></div>
+        <div class="data-row"><span class="dr-label">Innovation</span><span style="font-size:12px;color:var(--muted)">Evidence-based, always improving</span></div>
+      </div>
+    </div>
+    <div class="data-card">
+      <div class="data-card-title">Vision</div>
+      <p style="font-size:14px;color:var(--muted);line-height:1.8;margin-bottom:16px">To be Nigeria's leading physiotherapy clinic known for clinical excellence, compassionate care, and transformative outcomes that improve lives.</p>
+      <div style="border-top:1px solid var(--border);padding-top:14px">
+        <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:8px">2-year targets</div>
+        <div class="data-row"><span class="dr-label">Year 1 gross revenue</span><span class="dr-value pos">₦12–18M</span></div>
+        <div class="data-row"><span class="dr-label">Year 2 gross revenue</span><span class="dr-value pos">₦25–35M</span></div>
+        <div class="data-row"><span class="dr-label">Recovery time improvement Y1</span><span class="dr-value pos">5%</span></div>
+        <div class="data-row"><span class="dr-label">Recovery time improvement Y2</span><span class="dr-value pos">10–20%</span></div>
+        <div class="data-row"><span class="dr-label">First grant application</span><span class="dr-value warn">Month 10</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout danger"><strong>Three non-negotiables:</strong> (1) Employment contract with physio 2 signed before opening. (2) Package fees collected upfront — never sessions on credit. (3) Track patient outcomes from day one — this is your grant currency.</div>
+</div>
+
+<!-- ═══════════ STARTUP COSTS ═══════════ -->
+<div id="page-sunk" class="page">
+  <div class="section-header">
+    <div class="section-tag">Financials</div>
+    <div class="section-title">Startup Costs</div>
+    <div class="section-desc">Every naira required to open Goshen — editable. Click any item marked ✎ to update.</div>
+  </div>
+
+  <div class="metric-row" id="sunk-metrics"></div>
+
+  <div class="data-card">
+    <div class="data-card-title">Tick off items you already own — total adjusts automatically</div>
+    <div id="sunk-tick-list"></div>
+    <div style="margin-top:12px;padding:12px 16px;background:var(--blue-faint);border-radius:8px;display:flex;justify-content:space-between;align-items:center">
+      <span style="font-size:13px;color:var(--blue);font-weight:500">Equipment still needed</span>
+      <span style="font-size:16px;font-weight:700;color:var(--blue)" id="sunk-tick-total">₦—</span>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="data-card">
+      <div class="data-card-title">Cost breakdown by category</div>
+      <div class="chart-wrap" style="height:220px"><canvas id="sunkChart"></canvas></div>
+    </div>
+    <div class="data-card">
+      <div class="data-card-title">Setup costs — one-time</div>
+      <div id="sunk-setup-rows"></div>
+    </div>
+  </div>
+
+  <div class="data-card">
+    <div class="data-card-title">Working capital — 3-month buffer</div>
+    <div id="sunk-working-rows"></div>
+  </div>
+
+  <div class="callout warning"><strong>Rent is paid annually upfront in Nigeria.</strong> At ₦600k–₦1.2M/year, this is your single largest upfront cost. Budget for it before any other spend. You need a 5–6 kVA generator (not 2.5 kVA) — the A/C units + ultrasound + lighting draw ~4.5 kW peak.</div>
+
+  <div class="data-card">
+    <div class="data-card-title">Generator economics — the most underestimated cost</div>
+    <div class="chart-wrap" style="height:180px"><canvas id="genChart"></canvas></div>
+    <div class="chart-legend">
+      <span><span class="legend-dot" style="background:#1a4ba8"></span>Without inverter</span>
+      <span><span class="legend-dot" style="background:#1a6e3e"></span>With inverter (40% savings)</span>
+    </div>
+  </div>
+
+  <div class="data-card">
+    <div class="data-card-title">Generator reality check — the numbers</div>
+    <div class="data-row"><span class="dr-label">A/C units × 2 treatment rooms</span><span class="dr-value">~3.0 kW</span></div>
+    <div class="data-row"><span class="dr-label">Ultrasound + TENS + lighting</span><span class="dr-value">~1.0 kW</span></div>
+    <div class="data-row"><span class="dr-label">Laptop, POS, misc</span><span class="dr-value">~0.5 kW</span></div>
+    <div class="data-row subtotal"><span class="dr-label">Total peak load</span><span class="dr-value warn">~4.5 kW → need 5–6 kVA generator</span></div>
+    <div class="data-row"><span class="dr-label">Fuel cost (8 hrs/day, 6 days/week) without inverter</span><span class="dr-value neg">₦100–140k/month</span></div>
+    <div class="data-row"><span class="dr-label">With inverter + battery backup (~40% offset)</span><span class="dr-value pos">Saves ₦40–56k/month</span></div>
+    <div class="data-row"><span class="dr-label">Inverter payback period</span><span class="dr-value pos">3–4 months</span></div>
+    <div class="data-row"><span class="dr-label">Common mistake</span><span class="dr-value neg">Buying 2.5 kVA — dangerously undersized</span></div>
+  </div>
+</div>
+
+<!-- ═══════════ MONTHLY OPS ═══════════ -->
+<div id="page-ops" class="page">
+  <div class="section-header">
+    <div class="section-tag">Financials</div>
+    <div class="section-title">Monthly Operations</div>
+    <div class="section-desc">Fixed costs you pay regardless of patient volume, and variable costs that scale with growth.</div>
+  </div>
+
+  <div class="metric-row" id="ops-metrics"></div>
+
+  <div class="two-col">
+    <div class="data-card">
+      <div class="data-card-title">Fixed costs — every month</div>
+      <div id="ops-fixed-rows"></div>
+    </div>
+    <div class="data-card">
+      <div class="data-card-title">Variable costs — scale with volume</div>
+      <div id="ops-variable-rows"></div>
+    </div>
+  </div>
+
+  <div class="data-card">
+    <div class="data-card-title">Breakeven analysis — revenue vs costs by daily patient volume</div>
+    <div class="chart-wrap" style="height:240px"><canvas id="breakevenChart"></canvas></div>
+    <div class="chart-legend">
+      <span><span class="legend-dot" style="background:#1a4ba8"></span>Revenue</span>
+      <span><span class="legend-dot" style="background:#D85A30"></span>Total costs</span>
+    </div>
+    <div style="margin-top:12px;padding:10px 14px;background:var(--blue-faint);border-radius:8px;font-size:13px;color:var(--blue)">
+      Breakeven point: <strong id="be-sessions">calculating...</strong> at ₦<span id="be-fee">10,000</span>/session
+    </div>
+  </div>
+
+  <div class="data-card">
+    <div class="data-card-title">Monthly cost breakdown — donut view</div>
+    <div style="display:flex;align-items:center;gap:24px;flex-wrap:wrap">
+      <div class="chart-wrap" style="height:200px;max-width:200px"><canvas id="costDonutChart"></canvas></div>
+      <div id="cost-donut-legend" style="flex:1;min-width:180px"></div>
+    </div>
+  </div>
+
+  <div class="callout"><strong>Co-owner draw strategy:</strong> Option A (recommended) — zero draw for months 1–3, then ₦100–150k/month. This extends runway by ~45 days and removes the #1 early cash flow risk. Document as a founder loan if needed for accounting.</div>
+</div>
+
+<!-- ═══════════ 24-MONTH RUNWAY ═══════════ -->
+<div id="page-runway" class="page">
+  <div class="section-header">
+    <div class="section-tag">Financials</div>
+    <div class="section-title">24-Month Runway</div>
+    <div class="section-desc">Month-by-month P&amp;L from launch to scale. Click any month to see the full breakdown.</div>
+  </div>
+
+  <div class="assumption-panel">
+    <div class="ap-title">⚙ Adjust revenue assumptions</div>
+    <div class="ap-grid">
+      <div class="ap-item"><div class="ap-item-label">Average session fee</div><div class="ap-item-value" onclick="openEdit('avg_fee','Average session fee (₦)','What is the average fee per physiotherapy session? This drives all revenue projections.',10000,'NGN',updateRunway)">₦<span id="disp-avg_fee">10,000</span> <span class="edit-pencil">✎</span></div></div>
+      <div class="ap-item"><div class="ap-item-label">Month 1 patients/day</div><div class="ap-item-value" onclick="openEdit('m1_patients','Month 1 patients per day','Realistic daily patient count in your first month. Be conservative.',3,'',updateRunway)"><span id="disp-m1_patients">3</span>/day <span class="edit-pencil">✎</span></div></div>
+      <div class="ap-item"><div class="ap-item-label">Working days/month</div><div class="ap-item-value" onclick="openEdit('work_days','Working days per month','Days the clinic operates (Mon–Fri + Saturdays).',24,'',updateRunway)"><span id="disp-work_days">24</span> days <span class="edit-pencil">✎</span></div></div>
+      <div class="ap-item"><div class="ap-item-label">Max patients/day (Y2)</div><div class="ap-item-value" onclick="openEdit('max_patients','Target max patients/day','Full capacity with 2–3 physiotherapists.',18,'',updateRunway)"><span id="disp-max_patients">18</span>/day <span class="edit-pencil">✎</span></div></div>
+    </div>
+  </div>
+
+  <div class="month-selector" id="runway-months"></div>
+  <div class="metric-row" id="runway-metrics"></div>
+  <div class="data-card" id="runway-detail-card"></div>
+
+  <div class="data-card" style="margin-top:18px">
+    <div class="data-card-title">24-Month financial trajectory</div>
+    <div class="chart-wrap" style="height:280px"><canvas id="runwayBigChart"></canvas></div>
+    <div class="chart-legend">
+      <span><span class="legend-dot" style="background:#1a4ba8"></span>Revenue</span>
+      <span><span class="legend-dot" style="background:#D85A30"></span>Total costs</span>
+      <span><span class="legend-dot" style="background:#C89B4A"></span>Net profit</span>
+    </div>
+  </div>
+
+  <div class="data-card">
+    <div class="data-card-title">Cumulative profit — building to scale</div>
+    <div class="chart-wrap" style="height:200px"><canvas id="cumulChart"></canvas></div>
+  </div>
+</div>
+
+<!-- ═══════════ PRICING ═══════════ -->
+<div id="page-pricing" class="page">
+  <div class="section-header">
+    <div class="section-tag">Strategy</div>
+    <div class="section-title">Pricing Strategy</div>
+    <div class="section-desc">Never compete on price — compete on speed, outcomes, and the person-centered experience.</div>
+  </div>
+
+  <div class="callout"><strong>Anchor principle:</strong> The teaching hospital charges ₦2–5k with 1–4 week waits. Goshen sessions cost more because they happen this week, are personalized, and come with a written treatment plan. Patients pay for certainty and access — not just treatment.</div>
+
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+    <div style="font-size:13px;color:var(--muted)">Click any price to edit it. Changes save automatically.</div>
+    <button class="btn btn-outline" onclick="addPriceCard()" style="font-size:12px;padding:5px 12px">+ Add service</button>
+  </div>
+  <div class="pricing-grid" id="pricing-grid"></div>
+
+  <div class="two-col">
+    <div class="data-card">
+      <div class="data-card-title">Revenue mix target — Month 6</div>
+      <div class="chart-wrap" style="height:200px"><canvas id="revMixChart"></canvas></div>
+      <div class="chart-legend" id="revmix-legend"></div>
+    </div>
+    <div class="data-card">
+      <div class="data-card-title">Pricing vs. competitors</div>
+      <div class="data-row"><span class="dr-label">UCH (closer) — teaching hospital</span><span class="dr-value neg">₦2–5k · 1–4 wk wait · highest volume</span></div>
+      <div class="data-row"><span class="dr-label">LAUTECH (further) — teaching hospital</span><span class="dr-value neg">₦2–5k · similar waits · good referral target</span></div>
+      <div class="data-row"><span class="dr-label">Private clinic A (Bodija)</span><span class="dr-value warn">₦6–8k · unknown wait</span></div>
+      <div class="data-row"><span class="dr-label">Private clinics B &amp; C</span><span class="dr-value warn">₦5–8k · generic protocol</span></div>
+      <div class="data-row"><span class="dr-label">Goshen Physiotherapy</span><span class="dr-value pos">₦10k · same-week access</span></div>
+      <div class="data-row"><span class="dr-label">Goshen advantage</span><span class="dr-value pos">Written plan + outcome tracking</span></div>
+      <div class="data-row"><span class="dr-label">Package conversion target (M6)</span><span class="dr-value pos">40% of returning patients</span></div>
+    </div>
+  </div>
+
+  <div class="data-card">
+    <div class="data-card-title">Package conversion script — use at end of every assessment</div>
+    <div style="background:var(--surface);border-radius:10px;padding:14px;border-left:3px solid var(--blue-light);font-style:italic;color:var(--ink);line-height:1.7;font-size:14px">
+      "Based on your assessment, I recommend 6 sessions over the next 3 weeks. If you book the package today, you pay ₦52,000 instead of ₦60,000 — that's ₦8,000 saved, and your sessions are already scheduled so there's no wait."
+    </div>
+  </div>
+
+  <div class="data-card">
+    <div class="data-card-title">Package conversion — the profit multiplier</div>
+    <div class="data-row"><span class="dr-label">Target package rate by Month 3</span><span class="dr-value">25% of returning patients</span></div>
+    <div class="data-row"><span class="dr-label">Target package rate by Month 6</span><span class="dr-value pos">40% of returning patients</span></div>
+    <div class="data-row"><span class="dr-label">Cash flow impact at 40% package rate</span><span class="dr-value pos">+₦200–400k/month upfront</span></div>
+    <div class="data-row"><span class="dr-label">Why it works</span><span class="dr-value">Patient commits · you get certainty</span></div>
+    <div class="data-row"><span class="dr-label">When to offer</span><span class="dr-value">End of every first assessment, always</span></div>
+    <div class="data-row"><span class="dr-label">Collect fee</span><span class="dr-value neg">Before first session — no exceptions</span></div>
+    <div style="margin-top:14px">
+      <div style="font-size:12px;color:var(--muted);margin-bottom:8px">Package revenue share — Month 6 projection</div>
+      <div class="chart-wrap" style="height:160px"><canvas id="pkgConvChart"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ RETAIL ═══════════ -->
+<div id="page-retail" class="page">
+  <div class="section-header">
+    <div class="section-tag">Strategy</div>
+    <div class="section-title">Retail &amp; Product Revenue</div>
+    <div class="section-desc">Selling prescribed consumables and equipment adds 15–25% to revenue per visit with zero additional clinical time. Stock only what you prescribe — it never feels like upselling.</div>
+  </div>
+
+  <div class="metric-row">
+    <div class="metric-card featured"><div class="metric-label">Retail margin per visit</div><div class="metric-value">₦800–2k</div><div class="metric-sub">25% buy rate</div></div>
+    <div class="metric-card positive"><div class="metric-label">Monthly uplift (10 pts)</div><div class="metric-value">₦200–500k</div><div class="metric-sub">Additional gross</div></div>
+    <div class="metric-card positive"><div class="metric-label">Year 1 potential</div><div class="metric-value">₦1.5–4M</div><div class="metric-sub">Extra revenue</div></div>
+    <div class="metric-card warning"><div class="metric-label">Avg product margin</div><div class="metric-value">35–55%</div><div class="metric-sub">On wholesale cost</div></div>
+  </div>
+
+  <div class="two-col">
+    <div class="data-card">
+      <div class="data-card-title">Revenue with vs. without retail</div>
+      <div class="chart-wrap" style="height:220px"><canvas id="retailCompChart"></canvas></div>
+      <div class="chart-legend">
+        <span><span class="legend-dot" style="background:#6B7280"></span>Clinical only</span>
+        <span><span class="legend-dot" style="background:#1a4ba8"></span>Clinical + retail</span>
+      </div>
+    </div>
+    <div class="data-card">
+      <div class="data-card-title">Product margin breakdown</div>
+      <div class="chart-wrap" style="height:220px"><canvas id="retailMarginChart"></canvas></div>
+    </div>
+  </div>
+
+  <div class="data-card">
+    <div class="data-card-title" style="display:flex;justify-content:space-between;align-items:center">
+      <span>Product catalogue — editable</span>
+      <button class="btn btn-outline" onclick="addRetailItem()" style="font-size:12px;padding:5px 12px">+ Add item</button>
+    </div>
+    <div id="retail-catalogue"></div>
+    <div style="margin-top:12px;padding:10px 14px;background:var(--blue-faint);border-radius:8px;display:flex;justify-content:space-between;align-items:center">
+      <span style="font-size:13px;color:var(--blue)">Est. monthly retail revenue (25% buy rate, 10 pts/day)</span>
+      <span style="font-size:15px;font-weight:700;color:var(--blue)" id="retail-monthly-est">₦—</span>
+    </div>
+  </div>
+
+  <div class="callout"><strong>Implementation rule:</strong> Only sell what the physiotherapist prescribes. A small, curated display at reception — not a shop. The prescription slip from the physio is the trigger. The front desk closes the sale. Never begin stocking before you understand what you're consistently prescribing.</div>
+</div>
+
+<!-- ═══════════ MARKETING ═══════════ -->
+<div id="page-marketing" class="page">
+  <div class="section-header">
+    <div class="section-tag">Strategy</div>
+    <div class="section-title">Marketing &amp; Publicity Plan</div>
+    <div class="section-desc">Goshen's growth in year 1 comes from relationships, not advertising. Here is the full plan — phased by month, budgeted, and trackable.</div>
+  </div>
+
+  <div class="metric-row">
+    <div class="metric-card featured"><div class="metric-label">Monthly marketing budget</div><div class="metric-value">₦35–70k</div><div class="metric-sub">Year 1 average</div></div>
+    <div class="metric-card positive"><div class="metric-label">Google reviews target</div><div class="metric-value">20</div><div class="metric-sub">By Month 3</div></div>
+    <div class="metric-card warning"><div class="metric-label">Primary channel</div><div class="metric-value">WhatsApp</div><div class="metric-sub">+ Google SEO</div></div>
+    <div class="metric-card"><div class="metric-label">Brand positioning</div><div class="metric-value">Premium</div><div class="metric-sub">Never cheapest</div></div>
+  </div>
+
+  <div class="callout"><strong>Goshen's marketing philosophy:</strong> Every naira spent on relationships returns more than every naira spent on ads. In Ibadan's healthcare market, trust is the product. Your marketing plan is designed to build trust at scale — through Google, WhatsApp, referrals, and measurable outcomes.</div>
+
+  <div class="two-col">
+    <div class="data-card">
+      <div class="data-card-title">Channel priority — Year 1</div>
+      <div class="chart-wrap" style="height:220px"><canvas id="mktgChannelChart"></canvas></div>
+      <div class="chart-legend" id="mktg-channel-legend"></div>
+    </div>
+    <div class="data-card">
+      <div class="data-card-title">Monthly budget allocation</div>
+      <div class="chart-wrap" style="height:220px"><canvas id="mktgBudgetChart"></canvas></div>
+    </div>
+  </div>
+
+  <div class="data-card">
+    <div class="data-card-title">Phase 1 — Pre-launch (weeks 1–4) · Budget: ₦80–150k one-time</div>
+    <div class="data-row"><span class="dr-label">Professional logo + brand kit (colour palette, letterhead, card)</span><span class="dr-value warn">₦30–60k</span></div>
+    <div class="data-row"><span class="dr-label">500 branded referral cards + 200 clinic brochures (printed)</span><span class="dr-value warn">₦15–25k</span></div>
+    <div class="data-row"><span class="dr-label">Google Business Profile created + photos uploaded (free)</span><span class="dr-value pos">₦0</span></div>
+    <div class="data-row"><span class="dr-label">WhatsApp Business number set up with auto-reply + catalogue</span><span class="dr-value pos">₦0</span></div>
+    <div class="data-row"><span class="dr-label">Instagram page launched with 6 educational posts (before opening)</span><span class="dr-value pos">₦0–5k</span></div>
+    <div class="data-row"><span class="dr-label">Signage (exterior + reception wall — include in fit-out budget)</span><span class="dr-value warn">₦40–60k</span></div>
+    <div class="data-row"><span class="dr-label">Soft launch event — 10–15 guests from physios' networks</span><span class="dr-value warn">₦15–25k</span></div>
+  </div>
+
+  <div class="data-card">
+    <div class="data-card-title">Phase 2 — Months 1–3 · Budget: ₦35–50k/month · Goal: first 20 Google reviews</div>
+    <div class="data-row"><span class="dr-label">WhatsApp broadcast list — monthly health tips (not promotions)</span><span class="dr-value pos">Free</span></div>
+    <div class="data-row"><span class="dr-label">Instagram: 3 posts/week — patient education, behind-the-scenes, tips</span><span class="dr-value pos">₦0 (time only)</span></div>
+    <div class="data-row"><span class="dr-label">Google review ask — hand phone to patient at session 3 or 4</span><span class="dr-value pos">Free · converts at ~80%</span></div>
+    <div class="data-row"><span class="dr-label">Pharmacy visits — top up branded cards monthly</span><span class="dr-value warn">₦5,000/month</span></div>
+    <div class="data-row"><span class="dr-label">Referral gift for first hospital/surgeon referral (quality item ₦8–15k)</span><span class="dr-value warn">₦15,000 one-time</span></div>
+    <div class="data-row"><span class="dr-label">Google Ads — location-targeted ("physiotherapy Bodija Ibadan")</span><span class="dr-value warn">₦15–20k/month</span></div>
+    <div class="data-row"><span class="dr-label">WhatsApp community introductions (Bodija residential groups)</span><span class="dr-value pos">Free</span></div>
+  </div>
+
+  <div class="data-card">
+    <div class="data-card-title">Phase 3 — Months 4–9 · Budget: ₦50–70k/month · Goal: 50+ reviews, corporate contract</div>
+    <div class="data-row"><span class="dr-label">Instagram Reels — short physio tip videos (3–4 per month)</span><span class="dr-value pos">₦0–10k</span></div>
+    <div class="data-row"><span class="dr-label">Monthly gym visit — free injury triage session (3 gyms)</span><span class="dr-value warn">₦5,000/month travel</span></div>
+    <div class="data-row"><span class="dr-label">Corporate proposal sent to 3 companies in Bodija/Ring Road axis</span><span class="dr-value pos">₦0 (in-house)</span></div>
+    <div class="data-row"><span class="dr-label">Blog posts (2/month) — SEO-optimised for Ibadan health searches</span><span class="dr-value pos">₦0–15k</span></div>
+    <div class="data-row"><span class="dr-label">Patient testimonials — video + written (with consent)</span><span class="dr-value pos">Free</span></div>
+    <div class="data-row"><span class="dr-label">Referral card for existing patients ("refer a friend, get ₦2k off")</span><span class="dr-value warn">₦10–15k/month</span></div>
+    <div class="data-row"><span class="dr-label">Google Ads continued + Meta (Facebook/Instagram) Ads added</span><span class="dr-value warn">₦25–35k/month</span></div>
+  </div>
+
+  <div class="data-card">
+    <div class="data-card-title">Phase 4 — Months 10–12 · Budget: ₦60–80k/month · Goal: brand authority</div>
+    <div class="data-row"><span class="dr-label">Quarterly outcome report published (anonymised) — LinkedIn + Instagram</span><span class="dr-value pos">Free · powerful content</span></div>
+    <div class="data-row"><span class="dr-label">Press release to Tribune, Punch Ibadan — "New clinic improving recovery times"</span><span class="dr-value pos">₦0 (self-written)</span></div>
+    <div class="data-row"><span class="dr-label">Partnership with LAUTECH for student placement (free marketing)</span><span class="dr-value pos">₦0</span></div>
+    <div class="data-row"><span class="dr-label">Year 1 community health talk — public event in Bodija</span><span class="dr-value warn">₦20–40k</span></div>
+    <div class="data-row"><span class="dr-label">Google Ads + Meta Ads optimised based on 9 months of data</span><span class="dr-value warn">₦30–40k/month</span></div>
+  </div>
+
+  <div class="two-col">
+    <div class="data-card">
+      <div class="data-card-title">Content calendar — what to post and when</div>
+      <div class="data-row"><span class="dr-label">Monday</span><span class="dr-value">Educational tip (posture, pain, exercise)</span></div>
+      <div class="data-row"><span class="dr-label">Wednesday</span><span class="dr-value">Behind the scenes / team / equipment</span></div>
+      <div class="data-row"><span class="dr-label">Friday</span><span class="dr-value">Patient success story (with consent)</span></div>
+      <div class="data-row"><span class="dr-label">Monthly</span><span class="dr-value">WhatsApp health tip broadcast to all patients</span></div>
+      <div class="data-row"><span class="dr-label">Quarterly</span><span class="dr-value">Outcome data post — "Goshen by the numbers"</span></div>
+      <div class="data-row"><span class="dr-label">Never</span><span class="dr-value neg">Discount promotions or price announcements</span></div>
+    </div>
+    <div class="data-card">
+      <div class="data-card-title">Digital presence checklist</div>
+      <div class="data-row"><span class="dr-label">Google Business Profile verified</span><span class="badge badge-low">Must have</span></div>
+      <div class="data-row"><span class="dr-label">WhatsApp Business with auto-reply</span><span class="badge badge-low">Must have</span></div>
+      <div class="data-row"><span class="dr-label">Instagram with 6+ posts before launch</span><span class="badge badge-low">Must have</span></div>
+      <div class="data-row"><span class="dr-label">20 Google reviews by Month 3</span><span class="badge badge-info">Priority</span></div>
+      <div class="data-row"><span class="dr-label">Website (basic Linktree or custom)</span><span class="badge badge-info">Month 1</span></div>
+      <div class="data-row"><span class="dr-label">Facebook page</span><span class="badge badge-med">Month 2</span></div>
+      <div class="data-row"><span class="dr-label">LinkedIn (for corporate reach)</span><span class="badge badge-med">Month 3</span></div>
+    </div>
+  </div>
+
+  <div class="data-card">
+    <div class="data-card-title">Total marketing budget — 12 months</div>
+    <div class="chart-wrap" style="height:200px"><canvas id="mktgMonthChart"></canvas></div>
+    <div class="chart-legend">
+      <span><span class="legend-dot" style="background:#1a4ba8"></span>Monthly spend</span>
+      <span><span class="legend-dot" style="background:#C89B4A"></span>Cumulative</span>
+    </div>
+    <div style="margin-top:12px;padding:10px 14px;background:var(--blue-faint);border-radius:8px;font-size:13px;color:var(--blue)">
+      Total year 1 marketing budget: <strong>₦520,000–₦850,000</strong> including pre-launch one-time costs. This represents ~4–6% of projected year 1 revenue — a lean, relationship-first approach.
+    </div>
+  </div>
+
+  <div class="callout warning"><strong>What not to do:</strong> Don't run promotions or discount sessions to get patients. Discounting trains patients to wait for sales and undermines your premium positioning. Goshen's competitive advantage is quality and access — not price. Every marketing action should reinforce that.</div>
+</div>
+
+<!-- ═══════════ REFERRAL ═══════════ -->
+<div id="page-referral" class="page">
+  <div class="section-header">
+    <div class="section-tag">Strategy</div>
+    <div class="section-title">Referral Network</div>
+    <div class="section-desc">Your referral network is your marketing department in year 1. Build it before you open your doors.</div>
+  </div>
+
+  <div class="callout"><strong>The Bodija opportunity:</strong> The teaching hospital is simultaneously your biggest competitor and your best referral source. Their physiotherapy department has 1–4 week waits. Post-discharge patients need ongoing private care. Build relationships inside that hospital in week 1 — before you open.</div>
+
+  <div class="data-card" style="margin-bottom:18px">
+    <div class="data-card-title">Referral source value map</div>
+    <div class="chart-wrap" style="height:220px"><canvas id="referralChart"></canvas></div>
+    <div class="chart-legend" id="ref-legend"></div>
+  </div>
+
+  <div class="referral-card"><div class="ref-icon">H</div><div><div class="ref-title">Teaching Hospital — internal contacts <span class="badge badge-high" style="margin-left:6px">Priority 1</span></div><div class="ref-desc">Identify 3–5 registrars and senior physiotherapists at LAUTECH. These individuals see overflow cases they cannot accommodate. Offer to take their private referrals with a formal referral letter system. A quarterly thank-you gift (₦5–10k at Eid/Christmas) maintains the relationship.</div><div class="ref-value">Target: 2–3 referrals/month by Month 3 · Post-surgical packages = ₦52–96k each</div></div></div>
+
+  <div class="referral-card"><div class="ref-icon">Rx</div><div><div class="ref-title">Pharmacies (5 within 1km) <span class="badge badge-high" style="margin-left:6px">Priority 1</span></div><div class="ref-desc">Pharmacists are the trusted first-contact for musculoskeletal pain in Nigeria. Visit personally in week 2 pre-launch. Leave branded referral cards. Offer the first referred patient a free initial assessment — this closes the loop and earns lasting trust.</div><div class="ref-value">Target: 5 pharmacy partners by opening day · 1–2 referrals per pharmacy per month</div></div></div>
+
+  <div class="referral-card"><div class="ref-icon">Dr</div><div><div class="ref-title">Orthopedic Surgeons &amp; GPs <span class="badge badge-med" style="margin-left:6px">Priority 2</span></div><div class="ref-desc">Private orthopedic surgeons in Ibadan operate on patients who need structured physiotherapy rehab. Post-surgical patients are motivated, compliant, and use packages. Visit 2–3 surgeons personally. Bring a one-page clinic profile and referral pads.</div><div class="ref-value">Target: 2 surgeon partnerships by Month 2 · Post-surgical = 6–12 session packages minimum</div></div></div>
+
+  <div class="referral-card"><div class="ref-icon">Fx</div><div><div class="ref-title">Gyms &amp; Fitness Centers <span class="badge badge-med" style="margin-left:6px">Priority 2</span></div><div class="ref-desc">Gyms in Bodija serve working professionals — your primary demographic. Offer a free monthly 20-minute injury triage session for members. Builds trust, generates Instagram content, and produces 2–4 new patients per month per gym.</div><div class="ref-value">Target: 3 gym partnerships · Monthly visit at each</div></div></div>
+
+  <div class="referral-card"><div class="ref-icon">Co</div><div><div class="ref-title">Corporate HR Managers <span class="badge badge-info" style="margin-left:6px">Priority 3</span></div><div class="ref-desc">Companies with 50+ staff have occupational health obligations. A corporate wellness contract — even quarterly ergonomic sessions at ₦80–150k/visit — adds predictable, non-clinical revenue. Target companies along Ring Road, Secretariat Road, and Challenge.</div><div class="ref-value">Target: 1 corporate contract by Month 8 · ₦80–150k per engagement</div></div></div>
+
+  <div class="referral-card"><div class="ref-icon">W</div><div><div class="ref-title">WhatsApp Community Groups <span class="badge badge-info" style="margin-left:6px">Priority 3</span></div><div class="ref-desc">Bodija has active residential and professional WhatsApp groups. Get a trusted member to introduce Goshen. Share monthly health tips — not promotional content. Become the community's physio resource. 20 Google reviews by Month 3 is your digital equivalent.</div><div class="ref-value">Target: 20 Google reviews by Month 3 · Dominates local SEO</div></div></div>
+</div>
+
+<!-- ═══════════ COMPETITION ═══════════ -->
+<div id="page-competition" class="page">
+  <div class="section-header">
+    <div class="section-tag">Strategy</div>
+    <div class="section-title">Competitive Landscape</div>
+    <div class="section-desc">Four players in the Bodija field. Here is how to think about each — and where Goshen wins decisively.</div>
+  </div>
+
+  <div class="data-card">
+    <div class="data-card-title">Positioning map — personalization vs. access speed</div>
+    <div class="chart-wrap" style="height:280px"><canvas id="compChart"></canvas></div>
+  </div>
+
+  <div class="two-col">
+    <div class="data-card">
+      <div class="data-card-title">Competitor price comparison</div>
+      <div class="chart-wrap" style="height:200px"><canvas id="compPriceChart"></canvas></div>
+    </div>
+    <div class="data-card">
+      <div class="data-card-title">Wait time comparison</div>
+      <div class="chart-wrap" style="height:200px"><canvas id="compWaitChart"></canvas></div>
+    </div>
+  </div>
+
+  <div class="comp-card">
+    <div class="comp-name">UCH — University College Hospital <span class="badge badge-high">Closer · Highest threat</span></div>
+    <div class="comp-detail"><strong>Profile:</strong> Nigeria's most prominent teaching hospital. Closest to Goshen. High brand trust, institutional referrals, low cost (₦2–5k), high legitimacy.<br><strong>Fatal weakness:</strong> 1–4 week wait times, severely overloaded, generic protocols, no personalisation, no follow-up. Post-discharge patients need ongoing private care they cannot provide.<br><strong>Goshen's play:</strong> Be their private overflow. Build relationships with 3–5 registrars and senior physios personally — before opening. Never compete on price. Position as "the structured rehab option after UCH."<br><strong>Risk:</strong> If UCH adds a private wing, reassess immediately.</div>
+  </div>
+  <div class="comp-card">
+    <div class="comp-name">LAUTECH Teaching Hospital <span class="badge badge-med">Further · Secondary target</span></div>
+    <div class="comp-detail"><strong>Profile:</strong> Further from the clinic than UCH but still draws patients from Bodija. Similar price point (₦2–5k), similar wait times, similar weaknesses.<br><strong>Goshen's play:</strong> Lower referral priority than UCH but worth 1–2 personal contacts in the physio department. Their post-discharge patients in the Bodija area are Goshen's natural target.<br><strong>Opportunity:</strong> LAUTECH staff are often more receptive to private partnerships than UCH due to smaller bureaucracy.</div>
+  </div>
+
+  <div class="comp-card">
+    <div class="comp-name">Established private clinic (Bodija) <span class="badge badge-med">Medium threat</span></div>
+    <div class="comp-detail"><strong>Likely profile:</strong> ₦6–10k/session. 2+ years operational. Has some patient base and hospital relationships.<br><strong>Likely weakness:</strong> No digital presence, no outcome tracking, no WhatsApp booking, variable quality.<br><strong>Goshen's play:</strong> Outrank them on Google within 6 months. Win on professionalism and access speed. If they have unhappy former staff, those are potential hires.</div>
+  </div>
+
+  <div class="comp-card">
+    <div class="comp-name">Two smaller private clinics <span class="badge badge-low">Lower threat</span></div>
+    <div class="comp-detail"><strong>Likely profile:</strong> Solo physiotherapist, ₦4–8k/session, limited equipment, informal setup.<br><strong>Their patients:</strong> Price-sensitive segments — not Goshen's primary target.<br><strong>Goshen's play:</strong> They validate demand. When they are overwhelmed or close, their patients will seek quality — be the obvious upgrade. One may be open to a formal referral agreement.</div>
+  </div>
+
+  <div class="data-card">
+    <div class="data-card-title">Goshen's 5 execution pillars — where you win</div>
+    <div class="chart-wrap" style="height:220px"><canvas id="pillarsChart"></canvas></div>
+  </div>
+
+  <div class="data-card">
+    <div class="data-card-title">Recovery time reduction — the measurable moat</div>
+    <div class="data-row"><span class="dr-label">Year 1 target: 5% faster recovery than unstructured care</span><span class="badge badge-low">Achievable</span></div>
+    <div class="data-row"><span class="dr-label">Year 2 target: 10–20% faster (refined protocols)</span><span class="badge badge-info">Grant-fundable claim</span></div>
+    <div class="data-row"><span class="dr-label">How: baseline scores → re-assess at sessions 3, 6, discharge</span><span class="badge badge-info">Simple spreadsheet</span></div>
+    <div class="data-row"><span class="dr-label">Tools: VAS pain scale, goniometer (ROM), functional scores</span><span class="badge badge-low">Already clinical tools</span></div>
+    <div style="margin-top:16px">
+      <div style="font-size:12px;color:var(--muted);margin-bottom:8px">Projected recovery time improvement — year-on-year</div>
+      <div class="chart-wrap" style="height:180px"><canvas id="recoveryChart"></canvas></div>
+    </div>
+    <div style="margin-top:14px;padding:12px 16px;background:var(--blue-faint);border-radius:8px;font-size:13px;color:var(--blue);line-height:1.6">
+      In 18 months, Goshen will have outcome data that no competitor in Bodija can match. This becomes the grant narrative, the marketing case studies, and the competitive moat — all at once.
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ CONTRACTS ═══════════ -->
+<div id="page-contracts" class="page">
+  <div class="section-header">
+    <div class="section-tag">Documents</div>
+    <div class="section-title">Employment Contract</div>
+    <div class="section-desc">This template must be signed before the clinic opens. Have a Nigerian employment lawyer review before execution.</div>
+  </div>
+
+  <div class="callout danger"><strong>The single greatest operational risk</strong> Goshen faces in year 1 is the departure of the employed physiotherapist — taking patients with them. This contract prevents it. Sign before opening day.</div>
+
+  <div class="data-card">
+    <div class="data-card-title">Key risk: what happens without this contract</div>
+    <div class="chart-wrap" style="height:180px"><canvas id="contractRiskChart"></canvas></div>
+  </div>
+
+  <div class="data-card">
+    <div class="data-card-title" style="font-family:'DM Serif Display',serif;font-size:18px">Employment Agreement — Goshen Physiotherapy &amp; Rehabilitation Clinic</div>
+    <div style="font-size:13px;color:var(--muted);margin-bottom:18px">Between: Goshen Physiotherapy and Rehabilitation Clinic, No. 12 Are Avenue, New Bodija, Ibadan ("the Clinic")<br>And: <span style="color:var(--ink);font-weight:500">________________________</span>, NMCN Reg. No. <span style="color:var(--ink);font-weight:500">__________</span> ("the Employee")</div>
+
+    <div class="contract-clause"><div class="clause-title">1. Position &amp; Commencement</div><div class="clause-text">Appointed as Lead Physiotherapist commencing ____________, subject to confirmed NMCN registration and practicing certificate.</div></div>
+    <div class="contract-clause"><div class="clause-title">2. Remuneration</div><div class="clause-text">Monthly gross salary: ₦____________, payable last working day of each month. Annual review subject to performance. Performance bonus: up to 15% monthly salary on achieving patient satisfaction ≥4.2/5.0 and ≥8 sessions/day over 3 months.</div></div>
+    <div class="contract-clause"><div class="clause-title">3. Working Hours</div><div class="clause-text">Monday–Friday 8:00am–6:00pm; Saturday 9:00am–3:00pm; Sunday closed (except agreed premium home visits). 20 days annual leave.</div></div>
+    <div class="contract-clause"><div class="clause-title">4. Professional Development</div><div class="clause-text">Clinic funds one CPD course per year (up to ₦____________) subject to 12-month continued employment post-training.</div></div>
+
+    <div class="contract-clause critical"><div class="clause-title">5. Notice Period — Critical</div><div class="clause-text"><strong>Three (3) months' written notice</strong> by either party. In lieu of notice, equivalent of 3 months' gross salary. Non-waivable. Designed to protect continuity of patient care.</div></div>
+    <div class="contract-clause critical"><div class="clause-title">6. Non-Compete — Critical</div><div class="clause-text">For <strong>18 months post-employment</strong>: Employee shall not establish, join, or consult for any physiotherapy practice within <strong>3km of No. 12 Are Avenue, New Bodija</strong>; nor solicit or contact any Clinic patient for private physiotherapy services.</div></div>
+    <div class="contract-clause critical"><div class="clause-title">7. Patient Records Ownership — Critical</div><div class="clause-text">All patient records, treatment plans, assessment data, and contact information belong exclusively to Goshen Physiotherapy. Employee may not copy, retain, or remove patient records upon departure. Breach = immediate termination + legal action.</div></div>
+
+    <div class="contract-clause"><div class="clause-title">8. Confidentiality</div><div class="clause-text">Strict confidentiality maintained for all patient information, clinical protocols, financial information, and business strategies — during and after employment.</div></div>
+    <div class="contract-clause"><div class="clause-title">9. Code of Conduct</div><div class="clause-text">Maintain valid NMCN registration; adhere to Goshen's patient-centered care protocols; complete all outcome tracking documentation; no private practice using Clinic equipment.</div></div>
+
+    <div style="margin-top:20px;font-size:13px;color:var(--muted);line-height:2">
+      Signed by Clinic: _________________________ Date: ___________<br>
+      Signed by Employee: _________________________ Date: ___________<br>
+      Witness: _________________________ Date: ___________
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ GRANTS ═══════════ -->
+<div id="page-grants" class="page">
+  <div class="section-header">
+    <div class="section-tag">Documents</div>
+    <div class="section-title">Grant Strategy</div>
+    <div class="section-desc">Bootstrap year 1. Build evidence. Apply from Month 10. Your outcome data is your grant currency — start collecting day one.</div>
+  </div>
+
+  <div class="callout"><strong>Grant readiness milestone:</strong> Begin applications at Month 10–12, once you have clean financial records and 6+ months of documented patient outcomes. Grants require evidence — not just a good idea.</div>
+
+  <div class="data-card">
+    <div class="data-card-title">Grant timeline — months 1 to 24</div>
+    <div class="chart-wrap" style="height:180px"><canvas id="grantTimelineChart"></canvas></div>
+  </div>
+
+  <div class="data-card">
+    <div class="data-card-title">What to track from day one — your grant data set</div>
+    <div class="data-row"><span class="dr-label">New patients per month</span><span class="dr-value pos">Monthly count</span></div>
+    <div class="data-row"><span class="dr-label">VAS pain scores — baseline vs discharge</span><span class="dr-value pos">Per patient</span></div>
+    <div class="data-row"><span class="dr-label">Range of motion — baseline vs discharge</span><span class="dr-value pos">Per patient</span></div>
+    <div class="data-row"><span class="dr-label">Sessions to discharge (recovery speed)</span><span class="dr-value warn">Key grant metric</span></div>
+    <div class="data-row"><span class="dr-label">Patient satisfaction score (1–5 per session)</span><span class="dr-value pos">Per session</span></div>
+    <div class="data-row"><span class="dr-label">Referral source (hospital, self, GP, WhatsApp)</span><span class="dr-value pos">Per patient</span></div>
+    <div class="data-row"><span class="dr-label">Patient demographics (age, gender, condition)</span><span class="dr-value pos">Per patient</span></div>
+  </div>
+
+  <h3 style="font-size:15px;font-weight:600;margin:20px 0 12px;color:var(--ink)">Local grants &amp; funding</h3>
+
+  <div class="grant-card"><div class="grant-badge">T</div><div><div class="grant-name">Tony Elumelu Foundation Grant</div><div class="grant-amount">$5,000 USD (non-refundable) + mentorship</div><div class="grant-desc">Annual application (typically opens Q1). Requires a business plan, 6 months operational history, and social impact narrative. Goshen's recovery time reduction data fits perfectly. Apply at Month 10–12.</div></div></div>
+
+  <div class="grant-card"><div class="grant-badge">B</div><div><div class="grant-name">Bank of Industry (BOI) — Healthcare SME Loan</div><div class="grant-amount">₦2M–₦50M at 5–9% interest (concessionary)</div><div class="grant-desc">BOI healthcare fund for medical SMEs. Not a grant but highly subsidized. Requires CAC registration, 6 months of bank statements, business plan. Target Month 8–10 for equipment upgrade or third physio hire.</div></div></div>
+
+  <div class="grant-card"><div class="grant-badge">N</div><div><div class="grant-name">NIRSAL Microfinance Bank — Healthcare Loan</div><div class="grant-amount">₦500k–₦3M at subsidized rates</div><div class="grant-desc">Government-backed fund for healthcare businesses. Requires 3 months of operational records. Simpler application than BOI. Good bridge financing if cash is tight at Month 4–6.</div></div></div>
+
+  <h3 style="font-size:15px;font-weight:600;margin:20px 0 12px;color:var(--ink)">International grants</h3>
+
+  <div class="grant-card"><div class="grant-badge">W</div><div><div class="grant-name">World Physiotherapy Development Fund</div><div class="grant-amount">£2,000–£15,000 GBP</div><div class="grant-desc">Funds physiotherapy practices in LMICs specifically. Goshen's evidence-based, outcomes-focused approach is exactly what they fund. Requires NMCN membership, clinical outcome data. Less competitive than other international grants. Apply Month 12.</div></div></div>
+
+  <div class="grant-card"><div class="grant-badge">U</div><div><div class="grant-name">USAID — Health Systems Strengthening Fund</div><div class="grant-amount">$15,000–$75,000 USD</div><div class="grant-desc">USAID Nigeria funds private sector health delivery that reduces burden on public health infrastructure. A clinic demonstrably reducing hospital wait times and improving community health outcomes is a strong candidate. Apply Month 18 with 18 months of outcome data.</div></div></div>
+
+  <div class="grant-card"><div class="grant-badge">G</div><div><div class="grant-name">Gates Foundation — Primary Healthcare Delivery</div><div class="grant-amount">$25,000–$100,000 USD</div><div class="grant-desc">Funds measurable health outcome improvement in LMICs. Goshen's year-on-year recovery time reduction (5–20%) is a compelling measurable narrative. Requires formal research proposal and institutional partner (approach UI or LAUTECH). Target Year 2–3 with 18+ months of outcome data.</div></div></div>
+</div>
+
+<!-- ═══════════ LAUNCH PLAYBOOK ═══════════ -->
+<div id="page-launch" class="page">
+  <div class="section-header">
+    <div class="section-tag">Documents</div>
+    <div class="section-title">Launch Playbook</div>
+    <div class="section-desc">Every action, in order, from commitment to opening — through to the end of year 1.</div>
+  </div>
+
+  <div class="metric-row">
+    <div class="metric-card featured"><div class="metric-label">Pre-launch duration</div><div class="metric-value">4 Weeks</div><div class="metric-sub">Before doors open</div></div>
+    <div class="metric-card"><div class="metric-label">First profit month</div><div class="metric-value">Month 4–5</div><div class="metric-sub">Base scenario</div></div>
+    <div class="metric-card positive"><div class="metric-label">First grant target</div><div class="metric-value">Month 10</div><div class="metric-sub">Tony Elumelu</div></div>
+    <div class="metric-card"><div class="metric-label">Year 2 target</div><div class="metric-value">₦25–35M</div><div class="metric-sub">Gross revenue</div></div>
+  </div>
+
+  <div class="data-card">
+    <div class="data-card-title">Launch phase timeline — visual</div>
+    <div class="chart-wrap" style="height:180px"><canvas id="launchChart"></canvas></div>
+  </div>
+
+  <div class="data-card">
+    <div class="data-card-title" style="display:flex;justify-content:space-between;align-items:center">
+      <span>Launch checklist — tick as you go</span>
+      <span id="launch-progress" style="font-size:12px;font-weight:400;color:var(--muted)">Loading...</span>
+    </div>
+    <div id="launch-checklist"></div>
+  </div>
+
+  <div class="callout danger"><strong>The 3 decisions that define year 1:</strong> (1) Employment contract signed before opening — non-negotiable. (2) Package fees collected upfront — never sessions on credit. (3) Outcome metrics tracked from day 1 — your grant currency and competitive proof.</div>
+</div>
+
+<!-- ═══════════ FINANCIAL MODEL ═══════════ -->
+<div id="page-finmodel" class="page">
+  <div class="section-header">
+    <div class="section-tag">Financials · Interactive</div>
+    <div class="section-title">Financial Model</div>
+    <div class="section-desc">Adjust any assumption — all charts and projections recalculate instantly. Numbers reflect real Bodija market conditions.</div>
+  </div>
+
+  <div class="assumption-panel">
+    <div class="ap-title">⚙ Edit any assumption — everything updates live</div>
+    <div class="ap-grid">
+      <div class="ap-item">
+        <div class="ap-item-label">Session count basis</div>
+        <div style="display:flex;gap:6px;margin-top:4px">
+          <button id="btn-per-day" onclick="setSessionBasis('day')" style="flex:1;padding:5px 8px;border-radius:6px;font-size:12px;font-family:'DM Sans',sans-serif;cursor:pointer;border:1.5px solid var(--blue-mid);background:var(--blue-mid);color:#fff;font-weight:500">Per day</button>
+          <button id="btn-per-week" onclick="setSessionBasis('week')" style="flex:1;padding:5px 8px;border-radius:6px;font-size:12px;font-family:'DM Sans',sans-serif;cursor:pointer;border:1.5px solid var(--border);background:transparent;color:var(--muted)">Per week</button>
+        </div>
+      </div>
+      <div class="ap-item"><div class="ap-item-label" id="m1-label">Month 1 patients/day</div><div class="ap-item-value" onclick="openEdit('m1_patients','Month 1 patients (see basis above)','Enter as patients per day OR per week — toggle the basis button. Be conservative: 2–5 per day is realistic.',3,'',function(){updateRunway();renderFinModel();renderProjections();})"><span id="disp-m1_patients">3</span> <span id="m1-unit" style="font-size:13px;color:var(--muted)">/day</span> <span class="edit-pencil">✎</span></div></div>
+      <div class="ap-item"><div class="ap-item-label">Max capacity/day (Year 2)</div><div class="ap-item-value" onclick="openEdit('max_patients','Max patients per day','Full capacity with 2–3 physiotherapists at peak.',18,'',function(){updateRunway();renderFinModel();renderProjections();})"><span id="disp-max_patients">18</span>/day <span class="edit-pencil">✎</span></div></div>
+      <div class="ap-item"><div class="ap-item-label">Working days/month</div><div class="ap-item-value" onclick="openEdit('work_days','Working days per month','Mon–Fri + Saturdays. Typical: 24–26 days.',24,'',function(){updateOps();updateRunway();renderFinModel();renderProjections();})"><span id="disp-work_days">24</span> days <span class="edit-pencil">✎</span></div></div>
+      <div class="ap-item"><div class="ap-item-label">Average session fee (₦)</div><div class="ap-item-value" onclick="openEdit('avg_fee','Average session fee (₦)','Blended average across all session types.',10000,'NGN',function(){updateOps();updateRunway();renderFinModel();renderProjections();})">₦<span id="fm-fee">10,000</span> <span class="edit-pencil">✎</span></div></div>
+      <div class="ap-item"><div class="ap-item-label">Annual rent (₦, upfront)</div><div class="ap-item-value" onclick="openEdit('rent_annual','Annual rent (₦)','Paid as one sum upfront in Nigeria.',900000,'NGN',function(){updateSunkCosts();updateOps();updateRunway();renderFinModel();renderProjections();})">₦<span id="fm-rent">900,000</span> <span class="edit-pencil">✎</span></div></div>
+      <div class="ap-item"><div class="ap-item-label">Employed physio salary (₦/mo)</div><div class="ap-item-value" onclick="openEdit('physio_salary','Physio salary (₦/month)','Monthly gross salary for employed physiotherapist.',215000,'NGN',function(){updateSunkCosts();updateOps();updateRunway();renderFinModel();renderProjections();})">₦<span id="fm-salary">215,000</span> <span class="edit-pencil">✎</span></div></div>
+      <div class="ap-item"><div class="ap-item-label">Front desk salary (₦/mo)</div><div class="ap-item-value" onclick="openEdit('desk_salary','Front desk salary (₦/month)','Monthly salary for clinic coordinator.',70000,'NGN',function(){updateOps();updateRunway();renderFinModel();renderProjections();})">₦<span id="fm-desk">70,000</span> <span class="edit-pencil">✎</span></div></div>
+      <div class="ap-item"><div class="ap-item-label">Co-owner draw (₦/mo)</div><div class="ap-item-value" onclick="openEdit('owner_draw','Co-owner monthly draw (₦)','Set to 0 for months 1–3 to protect cash flow. Update when profitable.',0,'NGN',function(){updateOps();updateRunway();renderFinModel();renderProjections();})">₦<span id="fm-owner">0</span> <span class="edit-pencil">✎</span></div></div>
+      <div class="ap-item"><div class="ap-item-label">Generator fuel + PHCN (₦/mo)</div><div class="ap-item-value" onclick="openEdit('fuel_monthly','Monthly power cost (₦)','Generator fuel + electricity. Most underestimated cost.',110000,'NGN',function(){updateOps();updateRunway();renderFinModel();renderProjections();})">₦<span id="fm-fuel">110,000</span> <span class="edit-pencil">✎</span></div></div>
+      <div class="ap-item"><div class="ap-item-label">Marketing budget (₦/mo)</div><div class="ap-item-value" onclick="openEdit('marketing_monthly','Marketing budget (₦/month)','Google Ads, WhatsApp campaigns, referral gifts.',35000,'NGN',function(){updateOps();updateRunway();renderFinModel();renderProjections();})">₦<span id="fm-mktg">35,000</span> <span class="edit-pencil">✎</span></div></div>
+      <div class="ap-item"><div class="ap-item-label">Internet + phones (₦/mo)</div><div class="ap-item-value" onclick="openEdit('internet_monthly','Internet + phones (₦/month)','Fiber internet and phone lines.',18000,'NGN',function(){updateOps();updateRunway();renderFinModel();renderProjections();})">₦<span id="fm-internet">18,000</span> <span class="edit-pencil">✎</span></div></div>
+      <div class="ap-item"><div class="ap-item-label">Consumables per session (₦)</div><div class="ap-item-value" onclick="openEdit('cons_per_session','Consumables per session (₦)','Gloves, gel, paper, disposables per session.',500,'NGN',function(){updateOps();updateRunway();renderFinModel();renderProjections();})">₦<span id="fm-cons">500</span> <span class="edit-pencil">✎</span></div></div>
+      <div class="ap-item"><div class="ap-item-label">Retail uplift per session (%)</div><div class="ap-item-value" onclick="openEdit('retail_uplift','Retail revenue uplift (%)','What % of session revenue comes from retail product sales.',12,'',function(){renderFinModel();renderProjections();})"><span id="fm-retail">12</span>% <span class="edit-pencil">✎</span></div></div>
+    </div>
+    <div style="margin-top:14px;padding:10px 16px;background:rgba(255,255,255,0.6);border-radius:8px;font-size:12px;color:#5c3d0a;display:flex;align-items:center;gap:8px">
+      <span>💡</span> <span>All changes instantly update every chart, P&amp;L, runway, and projection across the entire platform.</span>
+    </div>
+  </div>
+
+  <div class="metric-row" id="fm-metrics"></div>
+
+  <div class="tabs-row">
+    <button class="tab-btn active" onclick="setFmScenario('conservative',this)">Conservative</button>
+    <button class="tab-btn" onclick="setFmScenario('base',this)">Base case</button>
+    <button class="tab-btn" onclick="setFmScenario('optimistic',this)">Optimistic</button>
+  </div>
+
+  <div class="two-col">
+    <div class="data-card" id="fm-pl-card"></div>
+    <div class="data-card">
+      <div class="data-card-title">Year 1 monthly P&amp;L — scenario view</div>
+      <div class="chart-wrap" style="height:220px"><canvas id="fmScenChart"></canvas></div>
+      <div class="chart-legend">
+        <span><span class="legend-dot" style="background:#6B7280"></span>Conservative</span>
+        <span><span class="legend-dot" style="background:#1a4ba8"></span>Base case</span>
+        <span><span class="legend-dot" style="background:#1a6e3e"></span>Optimistic</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="data-card">
+    <div class="data-card-title">Revenue vs costs — 24 months</div>
+    <div class="chart-wrap" style="height:260px"><canvas id="fmBigChart"></canvas></div>
+    <div class="chart-legend">
+      <span><span class="legend-dot" style="background:#1a4ba8"></span>Revenue</span>
+      <span><span class="legend-dot" style="background:#D85A30"></span>Total costs</span>
+      <span><span class="legend-dot" style="background:#C89B4A"></span>Net profit</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ PROFIT PROJECTIONS ═══════════ -->
+<div id="page-projections" class="page">
+  <div class="section-header">
+    <div class="section-tag">Financials · 24-Month View</div>
+    <div class="section-title">Profit Projections</div>
+    <div class="section-desc">Click any month to see its full P&amp;L breakdown. Year-by-year summary at the bottom.</div>
+  </div>
+
+  <div class="metric-row" id="proj-summary-metrics"></div>
+
+  <div class="data-card">
+    <div class="data-card-title">Select a month</div>
+    <div class="month-selector" id="proj-months"></div>
+    <div id="proj-detail-card" style="margin-top:4px"></div>
+  </div>
+
+  <div class="data-card">
+    <div class="data-card-title">Cumulative profit — 24 months</div>
+    <div class="chart-wrap" style="height:260px"><canvas id="projCumulChart"></canvas></div>
+    <div class="chart-legend">
+      <span><span class="legend-dot" style="background:#1a4ba8"></span>Monthly revenue (bars)</span>
+      <span><span class="legend-dot" style="background:#C89B4A"></span>Cumulative net profit (line)</span>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="data-card">
+      <div class="data-card-title" style="font-size:13px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted)">Year 1 summary</div>
+      <div class="data-row"><span class="dr-label">Gross revenue</span><span class="dr-value pos" id="proj-y1-rev">—</span></div>
+      <div class="data-row"><span class="dr-label">Total costs</span><span class="dr-value neg" id="proj-y1-cost">—</span></div>
+      <div class="data-row"><span class="dr-label">Net profit</span><span class="dr-value" id="proj-y1-net">—</span></div>
+      <div class="data-row subtotal"><span class="dr-label">Profit margin</span><span class="dr-value" id="proj-y1-margin">—</span></div>
+    </div>
+    <div class="data-card">
+      <div class="data-card-title" style="font-size:13px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted)">Year 2 summary</div>
+      <div class="data-row"><span class="dr-label">Gross revenue</span><span class="dr-value pos" id="proj-y2-rev">—</span></div>
+      <div class="data-row"><span class="dr-label">Total costs</span><span class="dr-value neg" id="proj-y2-cost">—</span></div>
+      <div class="data-row"><span class="dr-label">Net profit</span><span class="dr-value pos" id="proj-y2-net">—</span></div>
+      <div class="data-row subtotal"><span class="dr-label">Profit margin</span><span class="dr-value pos" id="proj-y2-margin">—</span></div>
+    </div>
+  </div>
+
+  <div class="data-card">
+    <div class="data-card-title">Key milestones</div>
+    <div class="data-row"><span class="dr-label">First profitable month</span><span class="dr-value pos">Month 4–5</span></div>
+    <div class="data-row"><span class="dr-label">Cumulative breakeven</span><span class="dr-value pos">Month 6–7</span></div>
+    <div class="data-row"><span class="dr-label">Co-owner draw begins</span><span class="dr-value">Month 5 (₦80–100k)</span></div>
+    <div class="data-row"><span class="dr-label">NHIS accreditation target</span><span class="dr-value warn">Month 8</span></div>
+    <div class="data-row"><span class="dr-label">First grant application</span><span class="dr-value warn">Month 10</span></div>
+    <div class="data-row"><span class="dr-label">Year 1 net profit range</span><span class="dr-value pos">₦1–3M</span></div>
+    <div class="data-row"><span class="dr-label">Year 2 net profit range</span><span class="dr-value pos">₦4–8M</span></div>
+    <div class="data-row"><span class="dr-label">Year 2 expansion decision</span><span class="dr-value">Third physio or second location</span></div>
+  </div>
+</div>
+
+
+<!-- ═══════════ FIREBASE SETUP ═══════════ -->
+<div id="page-firebase-setup" class="page">
+  <div class="section-header">
+    <div class="section-tag">Deploy & Sync</div>
+    <div class="section-title">Live deployment &amp; real-time sync</div>
+    <div class="section-desc">Connect this platform to Firebase so any change made anywhere is instantly saved and visible to everyone with the link. Free. Takes 20 minutes.</div>
+  </div>
+
+  <div class="metric-row">
+    <div class="metric-card featured"><div class="metric-label">Hosting cost</div><div class="metric-value">₦0</div><div class="metric-sub">Firebase free tier</div></div>
+    <div class="metric-card positive"><div class="metric-label">Setup time</div><div class="metric-value">~20 min</div><div class="metric-sub">One-time</div></div>
+    <div class="metric-card positive"><div class="metric-label">Sync speed</div><div class="metric-value">&lt;1 sec</div><div class="metric-sub">Real-time</div></div>
+    <div class="metric-card"><div class="metric-label">Access</div><div class="metric-value">Anyone</div><div class="metric-sub">With the link</div></div>
+  </div>
+
+  <div class="callout">Once connected, every number anyone edits — session fees, costs, patient counts, startup items — is instantly saved to Firebase and appears on every other device viewing this page. No refresh needed.</div>
+
+  <!-- STEP 1 -->
+  <div class="data-card">
+    <div class="data-card-title" style="font-size:16px">Step 1 — Create your Firebase project <span style="font-size:12px;color:var(--muted);font-weight:400;margin-left:8px">5 minutes</span></div>
+    <div class="timeline-item">
+      <span class="timeline-month">1.1</span>
+      <span class="timeline-dot" style="background:var(--blue-mid)"></span>
+      <div><div class="timeline-title">Go to console.firebase.google.com</div><div class="timeline-desc">Sign in with any Google account. Click <strong>Add project</strong>. Name it <code style="background:var(--surface);padding:2px 6px;border-radius:4px;font-size:12px">goshen-clinic</code>. Disable Google Analytics (not needed). Click <strong>Create project</strong>.</div></div>
+    </div>
+    <div class="timeline-item">
+      <span class="timeline-month">1.2</span>
+      <span class="timeline-dot" style="background:var(--blue-mid)"></span>
+      <div><div class="timeline-title">Enable Realtime Database</div><div class="timeline-desc">In the left sidebar, click <strong>Build → Realtime Database</strong>. Click <strong>Create Database</strong>. Choose the closest region (Belgium or US for Nigeria). When it asks for security rules, choose <strong>Start in test mode</strong> (you can lock it down later).</div></div>
+    </div>
+    <div class="timeline-item">
+      <span class="timeline-month">1.3</span>
+      <span class="timeline-dot" style="background:var(--blue-mid)"></span>
+      <div><div class="timeline-title">Get your database URL</div><div class="timeline-desc">After creation, you'll see a URL like <code style="background:var(--surface);padding:2px 6px;border-radius:4px;font-size:12px">https://goshen-clinic-default-rtdb.firebaseio.com</code>. Copy this — you need it in Step 3.</div></div>
+    </div>
+    <div class="timeline-item">
+      <span class="timeline-month">1.4</span>
+      <span class="timeline-dot" style="background:var(--blue-mid)"></span>
+      <div><div class="timeline-title">Register a web app</div><div class="timeline-desc">In Firebase console, click the gear icon → <strong>Project settings</strong>. Scroll down to "Your apps", click the <strong>&lt;/&gt;</strong> web icon. Name it <code style="background:var(--surface);padding:2px 6px;border-radius:4px;font-size:12px">goshen-web</code>. Click <strong>Register app</strong>. You'll see a <code style="background:var(--surface);padding:2px 6px;border-radius:4px;font-size:12px">firebaseConfig</code> object — copy the whole thing.</div></div>
+    </div>
+  </div>
+
+  <!-- STEP 2 — CONFIG ALREADY BAKED IN -->
+  <div class="data-card" style="border-color:var(--positive);background:#e8f5ee">
+    <div class="data-card-title" style="color:var(--positive);font-size:16px">Step 2 — Firebase config ✓ Already built in</div>
+    <p style="font-size:13px;color:var(--positive);line-height:1.7;margin-bottom:14px">The Firebase config for <strong>goshen-clinic</strong> is hardcoded directly into this file. Every time someone opens the page, it automatically connects to your Firebase Realtime Database. No setup needed.</p>
+    <div class="data-row"><span class="dr-label">Project</span><span class="dr-value" style="font-family:'DM Mono',monospace;font-size:12px">goshen-clinic</span></div>
+    <div class="data-row"><span class="dr-label">Database</span><span class="dr-value" style="font-family:'DM Mono',monospace;font-size:12px">goshen-clinic-default-rtdb.firebaseio.com</span></div>
+    <div class="data-row"><span class="dr-label">Connection status</span><span id="fb-connect-status" class="dr-value pos">Auto-connecting on load...</span></div>
+    <div style="margin-top:14px;padding:10px 14px;background:rgba(26,110,62,0.08);border-radius:8px;font-size:13px;color:var(--positive)">The green dot in the top bar confirms the connection. If it stays grey, check that your Realtime Database is enabled in the Firebase Console and the rules allow read/write.</div>
+  </div>
+
+  <!-- STEP 3 — GITHUB METHOD -->
+  <div class="data-card">
+    <div class="data-card-title" style="font-size:16px">Step 3 — Put the file on GitHub <span style="font-size:12px;color:var(--muted);font-weight:400;margin-left:8px">5 minutes · no Terminal needed</span></div>
+    <div class="timeline-item">
+      <span class="timeline-month">3.1</span>
+      <span class="timeline-dot" style="background:var(--blue-mid)"></span>
+      <div><div class="timeline-title">Create a GitHub account (if you don't have one)</div><div class="timeline-desc">Go to <strong>github.com</strong> and sign up. It's free. If you already have one, just sign in.</div></div>
+    </div>
+    <div class="timeline-item">
+      <span class="timeline-month">3.2</span>
+      <span class="timeline-dot" style="background:var(--blue-mid)"></span>
+      <div><div class="timeline-title">Create a new repository</div><div class="timeline-desc">Click the green <strong>New</strong> button (top left). Name it <code style="background:var(--surface);padding:2px 6px;border-radius:4px;font-size:12px">goshen-business-plan</code>. Set it to <strong>Public</strong>. Tick <strong>Add a README file</strong>. Click <strong>Create repository</strong>.</div></div>
+    </div>
+    <div class="timeline-item">
+      <span class="timeline-month">3.3</span>
+      <span class="timeline-dot" style="background:var(--blue-mid)"></span>
+      <div><div class="timeline-title">Upload the HTML file</div><div class="timeline-desc">Inside the repository, click <strong>Add file → Upload files</strong>. Drag the downloaded HTML file in. <strong>Rename it to <code style="background:var(--surface);padding:2px 6px;border-radius:4px;font-size:12px">index.html</code> before uploading</strong> — this is important. Click <strong>Commit changes</strong>.</div></div>
+    </div>
+    <div class="timeline-item">
+      <span class="timeline-month">3.4</span>
+      <span class="timeline-dot" style="background:var(--blue-mid)"></span>
+      <div><div class="timeline-title">Enable GitHub Pages</div><div class="timeline-desc">In the repository, click <strong>Settings</strong> (top right) → <strong>Pages</strong> (left sidebar). Under "Branch", select <strong>main</strong> and keep the folder as <strong>/ (root)</strong>. Click <strong>Save</strong>. GitHub will say "Your site is being published at..." — wait 1–2 minutes.</div></div>
+    </div>
+    <div class="timeline-item">
+      <span class="timeline-month">3.5</span>
+      <span class="timeline-dot" style="background:var(--positive)"></span>
+      <div><div class="timeline-title">You're live</div><div class="timeline-desc">Your URL will be: <code style="background:var(--surface);padding:2px 6px;border-radius:4px;font-size:12px">https://[your-github-username].github.io/goshen-business-plan</code>. Share this with anyone. The Firebase sync is already built in — the green dot will appear as soon as the page loads. To update the file in future, just upload a new version and it goes live within 1 minute.</div></div>
+    </div>
+  </div>
+
+  <!-- STEP 4 — SECURITY -->
+  <div class="data-card">
+    <div class="data-card-title" style="font-size:16px">Step 4 — Lock down the database (recommended) <span style="font-size:12px;color:var(--muted);font-weight:400;margin-left:8px">5 minutes · after testing</span></div>
+    <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:14px">Right now the database is in test mode — anyone can read and write. Once you've confirmed everything works, go to Firebase Console → Realtime Database → Rules and replace the content with this:</p>
+    <div style="background:var(--ink);border-radius:10px;padding:16px;font-family:'DM Mono',monospace;font-size:12px;color:#a3e4c4;line-height:1.7;white-space:pre">{
+  "rules": {
+    ".read": true,
+    ".write": "auth != null"
+  }
+}</div>
+    <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-top:12px">This allows anyone with the link to view the data, but only authenticated users (you) can write. To enable authentication, go to Firebase Console → Authentication → Sign-in method → Enable Email/Password. Then contact me and I'll add the login screen to the app.</p>
+  </div>
+
+  <div class="data-card" style="border-color:var(--positive);background:var(--success-bg, #e8f5ee)">
+    <div class="data-card-title" style="color:var(--positive)">What syncs in real time</div>
+    <div class="data-row"><span class="dr-label">All financial assumptions (fees, salaries, costs)</span><span class="badge badge-low">Syncs instantly</span></div>
+    <div class="data-row"><span class="dr-label">Session basis (per day / per week)</span><span class="badge badge-low">Syncs instantly</span></div>
+    <div class="data-row"><span class="dr-label">Startup cost items (names, amounts, ticked off)</span><span class="badge badge-low">Syncs instantly</span></div>
+    <div class="data-row"><span class="dr-label">Working capital items</span><span class="badge badge-low">Syncs instantly</span></div>
+    <div class="data-row"><span class="dr-label">Retail product catalogue (names, prices, margins)</span><span class="badge badge-low">Syncs instantly</span></div>
+    <div class="data-row"><span class="dr-label">All charts and projections</span><span class="badge badge-low">Auto-recalculate</span></div>
+  </div>
+</div>
+
+<!-- ═══════════ SETTINGS ═══════════ -->
+<div id="page-settings" class="page">
+  <div class="section-header">
+    <div class="section-tag">Configuration</div>
+    <div class="section-title">Edit Assumptions</div>
+    <div class="section-desc">Change any number here and all models, charts, and projections update automatically across the entire platform.</div>
+  </div>
+  <div class="callout">All changes update every chart and number across the platform in real time. No need to recalculate anything manually.</div>
+  <div class="assumption-panel">
+    <div class="ap-title">⚙ Core financial assumptions</div>
+    <div class="ap-grid" id="settings-grid"></div>
+  </div>
+</div>
+
+  </div><!-- /content-area -->
+</div><!-- /main -->
+
+<!-- MODAL -->
+<div id="edit-modal">
+  <div class="modal-box">
+    <div class="modal-title" id="modal-title">Edit value</div>
+    <div class="modal-desc" id="modal-desc"></div>
+    <div class="modal-input-wrap"><span class="modal-prefix" id="modal-prefix">₦</span><input class="modal-input" type="number" id="modal-input"></div>
+    <div class="modal-hint" id="modal-hint"></div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeEdit()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveEdit()">Update</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════ STATE ═══════════════════
+const state = {
+  rent_annual: 900000, physio_salary: 215000, gen_cost: 350000,
+  ultrasound_cost: 280000, fuel_monthly: 110000, desk_salary: 70000,
+  internet_monthly: 18000, marketing_monthly: 35000, avg_fee: 10000,
+  m1_patients: 3, work_days: 24, max_patients: 18,
+  owner_draw: 0, cons_per_session: 500, retail_uplift: 12,
+};
+let sessionBasis = 'day'; // 'day' or 'week'
+
+function setSessionBasis(basis) {
+  sessionBasis = basis;
+  document.getElementById('btn-per-day').style.background = basis==='day' ? 'var(--blue-mid)' : 'transparent';
+  document.getElementById('btn-per-day').style.color = basis==='day' ? '#fff' : 'var(--muted)';
+  document.getElementById('btn-per-day').style.borderColor = basis==='day' ? 'var(--blue-mid)' : 'var(--border)';
+  document.getElementById('btn-per-week').style.background = basis==='week' ? 'var(--blue-mid)' : 'transparent';
+  document.getElementById('btn-per-week').style.color = basis==='week' ? '#fff' : 'var(--muted)';
+  document.getElementById('btn-per-week').style.borderColor = basis==='week' ? 'var(--blue-mid)' : 'var(--border)';
+  const label = document.getElementById('m1-label');
+  const unit = document.getElementById('m1-unit');
+  if(label) label.textContent = 'Month 1 patients/' + basis;
+  if(unit) unit.textContent = '/' + basis;
+  updateRunway(); renderFinModel(); renderProjections();
+}
+
+function getDailyPatients(raw) {
+  if(sessionBasis === 'week') return Math.max(1, Math.round(raw / 5));
+  return raw;
+}
+
+// ═══════════════════ NAV ═══════════════════
+const pageTitles = {
+  overview:'Executive Summary', sunk:'Startup Costs', ops:'Monthly Operations',
+  runway:'24-Month Runway', finmodel:'Financial Model', projections:'Profit Projections',
+  pricing:'Pricing Strategy', retail:'Retail Revenue', marketing:'Marketing & Publicity Plan',
+  referral:'Referral Network', competition:'Competitive Landscape',
+  contracts:'Employment Contracts', grants:'Grant Strategy', launch:'Launch Playbook',
+  settings:'Edit Assumptions',
+  'firebase-setup':'Deploy & Real-Time Sync'
+};
+
+function showPage(id, navEl) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  if (navEl) navEl.classList.add('active');
+  document.getElementById('topbar-title').textContent = pageTitles[id] || (typeof pageTitlesExtra !== 'undefined' && pageTitlesExtra[id]) || id;
+  if (id==='sunk') renderSunk();
+  if (id==='ops') renderOps();
+  if (id==='runway') renderRunway();
+  if (id==='finmodel') { renderFinModel(); }
+  if (id==='projections') { renderProjections(); }
+  if (id==='pricing') { renderPricingGrid(); renderRevMixChart(); renderPkgConvChart(); }
+  if (id==='retail') { renderRetailCharts(); renderRetailCatalogue(); }
+  if (id==='marketing') { renderMarketingCharts(); }
+  if (id==='launch') { renderLaunchChecklist(); }
+  if (id==='settings') { renderSettings(); }
+  if (id==='retail') { renderRetailCharts(); }
+  if (id==='referral') renderReferralChart();
+  if (id==='competition') renderCompCharts();
+  if (id==='grants') renderGrantTimeline();
+  if (id==='launch') renderLaunchChart();
+  if (id==='settings') renderSettings();
+  window.scrollTo(0,0);
+}
+
+// ═══════════════════ MODAL ═══════════════════
+let curKey=null, curCb=null;
+function openEdit(key,title,desc,def,prefix,cb){
+  curKey=key; curCb=cb;
+  document.getElementById('modal-title').textContent=title;
+  document.getElementById('modal-desc').textContent=desc;
+  document.getElementById('modal-prefix').textContent=prefix==='NGN'?'₦':'';
+  document.getElementById('modal-input').value=state[key]||def;
+  document.getElementById('modal-hint').textContent='Current: '+(prefix==='NGN'?'₦':'')+(state[key]||def).toLocaleString();
+  document.getElementById('edit-modal').classList.add('open');
+  setTimeout(()=>document.getElementById('modal-input').focus(),100);
+}
+function closeEdit(){document.getElementById('edit-modal').classList.remove('open');curKey=null;}
+function showToast(msg){
+  const t=document.getElementById('toast');
+  const m=document.getElementById('toast-msg');
+  if(!t||!m)return;
+  m.textContent=msg||'Saved';
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2200);
+}
+
+function rebuildAllModels(){
+  renderOverviewChart();
+  const active=document.querySelector('.page.active');
+  if(!active)return;
+  const id=active.id.replace('page-','');
+  if(id==='sunk')renderSunkEditable();
+  if(id==='ops')renderOps();
+  if(id==='runway')renderRunway();
+  if(id==='finmodel')renderFinModel();
+  if(id==='projections')renderProjections();
+  if(id==='pricing'){renderRevMixChart();renderPkgConvChart();}
+  if(id==='retail'){renderRetailCharts();renderRetailCatalogue();}
+}
+
+function saveEdit(){
+  if(!curKey)return;
+  const v=parseFloat(document.getElementById('modal-input').value);
+  if(isNaN(v)||v<0){alert('Please enter a valid number.');return;}
+  state[curKey]=v;
+  // Update every display span that shows this key
+  document.querySelectorAll('[id="disp-'+curKey+'"]').forEach(el=>el.textContent=v.toLocaleString());
+  document.querySelectorAll('[id="settings-disp-'+curKey+'"]').forEach(el=>el.textContent=v.toLocaleString());
+  // Update financial model panel spans
+  const fmMap={rent_annual:'fm-rent',physio_salary:'fm-salary',desk_salary:'fm-desk',
+    owner_draw:'fm-owner',fuel_monthly:'fm-fuel',marketing_monthly:'fm-mktg',
+    internet_monthly:'fm-internet',avg_fee:'fm-fee',cons_per_session:'fm-cons',
+    retail_uplift:'fm-retail',m1_patients:'fm-m1'};
+  if(fmMap[curKey]){const el=document.getElementById(fmMap[curKey]);if(el)el.textContent=v.toLocaleString();}
+  closeEdit();
+  if(curCb)curCb();
+  rebuildAllModels();
+  showToast('✓ Saved — models updated');
+  saveToFirebase();
+}
+document.getElementById('edit-modal').addEventListener('click',function(e){if(e.target===this)closeEdit();});
+document.getElementById('modal-input').addEventListener('keydown',function(e){if(e.key==='Enter')saveEdit();if(e.key==='Escape')closeEdit();});
+
+// ═══════════════════ HELPERS ═══════════════════
+function fmt(n){return'₦'+Math.round(n).toLocaleString();}
+function fmtR(mn,mx){return fmt(mn)+'–'+fmt(mx);}
+function getFixed(){return Math.round((state.rent_annual/12)+state.physio_salary+state.owner_draw+state.fuel_monthly+state.desk_salary+state.internet_monthly+15000+15000);}
+function getBE(){return Math.ceil(getFixed()/state.avg_fee);}
+function getBEday(){return Math.ceil(getBE()/state.work_days);}
+
+// ═══════════════════ MONTH DATA ═══════════════════
+function getMonthData(){
+  const ramp=[0.17,0.28,0.36,0.47,0.55,0.63,0.70,0.77,0.83,0.88,0.93,1.0,1.03,1.07,1.10,1.15,1.22,1.28,1.34,1.40,1.45,1.50,1.55,1.60];
+  const feeRamp=[1,1,1,1,1,1.05,1.05,1.05,1.1,1.1,1.1,1.15,1.15,1.2,1.2,1.2,1.25,1.25,1.3,1.3,1.3,1.35,1.4,1.4];
+  const fixRamp=[1,1,1,1.05,1.05,1.08,1.08,1.1,1.1,1.1,1.1,1.12,1.15,1.15,1.15,1.3,1.4,1.4,1.4,1.4,1.42,1.42,1.45,1.45];
+  const labels=['Ramp-up','Building','Gaining traction','Near breakeven','First profit','Co-owner draw','Packages grow','NHIS process','Corporate target','Strong pipeline','Near capacity','Year 1 close','Y2 start','Growth','NHIS billing','3rd physio','Scale','Grant applications','Growing fast','Capacity push','Home visits','Corporate expand','Pre-expansion','Year 2 close'];
+  const m1daily = getDailyPatients(state.m1_patients);
+  return ramp.map((r,i)=>{
+    const pts=Math.max(m1daily,Math.round(state.max_patients*r));
+    const fee=Math.round(state.avg_fee*feeRamp[i]);
+    const days=state.work_days+(i>=5?1:0)+(i>=12?1:0);
+    const clinRev=pts*fee*days;
+    const retailRev=Math.round(clinRev*(state.retail_uplift/100));
+    const rev=clinRev+retailRev;
+    const fixed=Math.round(getFixed()*fixRamp[i]);
+    const variable=Math.round(pts*days*state.cons_per_session+state.marketing_monthly);
+    const total=fixed+variable;
+    const net=rev-total;
+    return{m:i<12?'Y1 M'+(i+1):'Y2 M'+(i-11),pts,fee,days,rev,fixed,variable,total,net,label:labels[i],clinRev,retailRev};
+  });
+}
+
+// ═══════════════════ STARTUP COSTS ═══════════════════
+// ═══════════════════ STARTUP COSTS — EDITABLE ═══════════════════
+let setupItemsData = [
+  {label:'Annual rent (paid upfront)',cost:900000,cat:'Space'},
+  {label:'Renovation & fit-out',cost:350000,cat:'Space'},
+  {label:'Signage (exterior + interior)',cost:80000,cat:'Space'},
+  {label:'Reception furniture + waiting area',cost:115000,cat:'Furniture'},
+  {label:'2× clinical treatment beds',cost:190000,cat:'Equipment'},
+  {label:'TENS / EMS machine',cost:115000,cat:'Equipment'},
+  {label:'Therapeutic ultrasound unit',cost:280000,cat:'Equipment'},
+  {label:'Rehab kit (bands, weights, balls)',cost:95000,cat:'Equipment'},
+  {label:'Hot/cold packs + consumables (3 months)',cost:50000,cat:'Supplies'},
+  {label:'2× air conditioning units',cost:220000,cat:'Equipment'},
+  {label:'Generator (5–6 kVA)',cost:350000,cat:'Equipment'},
+  {label:'Inverter + battery backup',cost:170000,cat:'Equipment'},
+  {label:'POS terminal + receipt printer',cost:47000,cat:'Tech'},
+  {label:'Laptop / computer',cost:240000,cat:'Tech'},
+  {label:'Scheduling software (annual)',cost:72000,cat:'Tech'},
+  {label:'CAC + NMCN + legal fees',cost:105000,cat:'Compliance'},
+  {label:'Professional indemnity insurance',cost:80000,cat:'Compliance'},
+  {label:'Launch marketing + branding',cost:115000,cat:'Marketing'},
+  {label:'Initial retail product stock',cost:115000,cat:'Retail'},
+];
+let workingItemsData = [
+  {label:'Employed physio salary (3 months)',cost:645000,cat:'Salaries'},
+  {label:'Front desk salary (3 months)',cost:210000,cat:'Salaries'},
+  {label:'Generator fuel (3 months)',cost:330000,cat:'Operations'},
+  {label:'Internet + phones (3 months)',cost:54000,cat:'Operations'},
+  {label:'Consumables restocking',cost:40000,cat:'Supplies'},
+  {label:'Marketing months 1–3',cost:105000,cat:'Marketing'},
+];
+
+function renderSunkEditable(){
+  const setupTotal = setupItemsData.reduce((a,b)=>a+(b.owned?0:b.cost),0);
+  const workTotal = workingItemsData.reduce((a,b)=>a+b.cost,0);
+  const grand = setupTotal + workTotal;
+
+  // metrics
+  document.getElementById('sunk-metrics').innerHTML=`
+    <div class="metric-card"><div class="metric-label">Setup costs</div><div class="metric-value">${fmt(setupTotal)}</div><div class="metric-sub">Items not yet owned</div></div>
+    <div class="metric-card"><div class="metric-label">Working capital (3 mo)</div><div class="metric-value">${fmt(workTotal)}</div></div>
+    <div class="metric-card warning"><div class="metric-label">Total needed</div><div class="metric-value">${fmt(grand)}</div></div>
+    <div class="metric-card featured"><div class="metric-label">Capital available</div><div class="metric-value">₦2–5M</div><div class="metric-sub">Viable ✓</div></div>`;
+
+  // tick list
+  renderTickList();
+
+  // setup rows — editable
+  document.getElementById('sunk-setup-rows').innerHTML =
+    `<div style="display:grid;grid-template-columns:1fr 130px 50px;gap:6px;padding:6px 0;font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);border-bottom:2px solid var(--border)"><span>Item</span><span style="text-align:right">Cost (₦)</span><span></span></div>` +
+    setupItemsData.map((it,i)=>`
+      <div style="display:grid;grid-template-columns:1fr 130px 50px;gap:6px;align-items:center;padding:6px 0;border-bottom:1px solid var(--surface)">
+        <input value="${it.label}" onblur="setupItemsData[${i}].label=this.value;renderSunkEditable();showToast('✓ Item updated');saveToFirebase()" style="border:none;background:transparent;font-size:13px;color:var(--muted);font-family:'DM Sans',sans-serif;width:100%;outline:none" onfocus="this.style.borderBottom='1px solid var(--blue-light)'" onblur="this.style.borderBottom='none'">
+        <input type="number" value="${it.cost}" onblur="setupItemsData[${i}].cost=+this.value;renderSunkEditable();showToast('✓ Cost updated');saveToFirebase()" style="border:1px solid var(--border);border-radius:6px;padding:4px 8px;font-size:13px;color:var(--blue-mid);font-family:'DM Mono',monospace;text-align:right;width:100%;background:transparent;outline:none" onfocus="this.style.borderColor='var(--blue-mid)'" onblur="this.style.borderColor='var(--border)'">
+        <button onclick="setupItemsData.splice(${i},1);renderSunkEditable()" style="background:var(--coral-light);border:none;color:var(--coral);border-radius:6px;width:32px;height:28px;cursor:pointer;font-size:15px">×</button>
+      </div>`).join('') +
+    `<div style="margin-top:8px;display:flex;gap:8px">
+      <button onclick="setupItemsData.push({label:'New item',cost:0,cat:'Other'});renderSunkEditable()" class="btn btn-outline" style="font-size:12px;padding:5px 12px">+ Add item</button>
+    </div>
+    <div class="data-row subtotal" style="margin-top:8px"><span class="dr-label">Setup total</span><span class="dr-value warn">${fmt(setupTotal)}</span></div>`;
+
+  // working capital rows — editable
+  document.getElementById('sunk-working-rows').innerHTML =
+    workingItemsData.map((it,i)=>`
+      <div style="display:grid;grid-template-columns:1fr 130px 50px;gap:6px;align-items:center;padding:6px 0;border-bottom:1px solid var(--surface)">
+        <input value="${it.label}" onblur="workingItemsData[${i}].label=this.value;renderSunkEditable();showToast('✓ Item updated');saveToFirebase()" style="border:none;background:transparent;font-size:13px;color:var(--muted);font-family:'DM Sans',sans-serif;width:100%;outline:none" onfocus="this.style.borderBottom='1px solid var(--blue-light)'" onblur="this.style.borderBottom='none'">
+        <input type="number" value="${it.cost}" onblur="workingItemsData[${i}].cost=+this.value;renderSunkEditable();showToast('✓ Cost updated');saveToFirebase()" style="border:1px solid var(--border);border-radius:6px;padding:4px 8px;font-size:13px;color:var(--blue-mid);font-family:'DM Mono',monospace;text-align:right;width:100%;background:transparent;outline:none" onfocus="this.style.borderColor='var(--blue-mid)'" onblur="this.style.borderColor='var(--border)'">
+        <button onclick="workingItemsData.splice(${i},1);renderSunkEditable()" style="background:var(--coral-light);border:none;color:var(--coral);border-radius:6px;width:32px;height:28px;cursor:pointer;font-size:15px">×</button>
+      </div>`).join('') +
+    `<div style="margin-top:8px">
+      <button onclick="workingItemsData.push({label:'New item',cost:0,cat:'Other'});renderSunkEditable()" class="btn btn-outline" style="font-size:12px;padding:5px 12px">+ Add item</button>
+    </div>
+    <div class="data-row subtotal" style="margin-top:8px"><span class="dr-label">Working capital total</span><span class="dr-value warn">${fmt(workTotal)}</span></div>`;
+
+  renderSunkChart(setupTotal,setupTotal,workTotal);
+  renderGenChart();
+}
+
+const setupItems=()=>setupItemsData.map(i=>({...i,min:i.cost,max:i.cost,fixed:true}));
+const workingItems=()=>workingItemsData.map(i=>({...i,min:i.cost,max:i.cost}));
+
+function renderSunk(){ renderSunkEditable(); }
+function updateSunkCosts(){ renderSunkEditable(); }
+
+let sunkC=null;
+function renderSunkChart(sm,sx,wm){
+  const ctx=document.getElementById('sunkChart');if(!ctx)return;
+  if(sunkC)sunkC.destroy();
+  sunkC=new Chart(ctx,{type:'bar',data:{labels:['Equipment & tech','Fit-out & furniture','Compliance & insurance','Working capital'],datasets:[{data:[Math.round((state.gen_cost+state.ultrasound_cost+80000+48000+180000+35000)/1000),Math.round((250000+80000+140000+160000+220000)/1000),Math.round((80000+60000+80000)/1000),Math.round(wm/1000)],backgroundColor:['#1a4ba8','#0D2E6E','#C89B4A','#1a6e3e'],borderRadius:6,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{ticks:{callback:v=>'₦'+v+'k',font:{size:11}},grid:{color:'rgba(0,0,0,0.04)'}},y:{ticks:{font:{size:12}},grid:{display:false}}}}});
+}
+
+let genC=null;
+function renderGenChart(){
+  const ctx=document.getElementById('genChart');if(!ctx)return;
+  if(genC)genC.destroy();
+  const months=['M1','M2','M3','M4','M5','M6','M7','M8','M9','M10','M11','M12'];
+  const without=months.map(()=>state.fuel_monthly);
+  const withInv=months.map(()=>Math.round(state.fuel_monthly*0.6));
+  genC=new Chart(ctx,{type:'line',data:{labels:months,datasets:[{label:'Without inverter',data:without,borderColor:'#D85A30',fill:false,tension:0,pointRadius:3,borderWidth:2},{label:'With inverter',data:withInv,borderColor:'#1a6e3e',backgroundColor:'rgba(26,110,62,0.08)',fill:true,tension:0,pointRadius:3,borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'₦'+Math.round(v/1000)+'k',font:{size:11}},grid:{color:'rgba(0,0,0,0.04)'}},x:{ticks:{font:{size:11}},grid:{display:false}}}}});
+}
+
+// ═══════════════════ MONTHLY OPS ═══════════════════
+let beC=null, donutC=null;
+function renderOps(){
+  const rentMo=Math.round(state.rent_annual/12);
+  const fixed=getFixed();
+  const variable10=Math.round(10*state.work_days*state.cons_per_session+7500+state.marketing_monthly+17500);
+  const be=getBEday();
+  document.getElementById('ops-metrics').innerHTML=`
+    <div class="metric-card negative"><div class="metric-label">Fixed costs/month</div><div class="metric-value">${fmt(fixed)}</div></div>
+    <div class="metric-card warning"><div class="metric-label">Variable (10 pts/day)</div><div class="metric-value">${fmt(variable10)}</div></div>
+    <div class="metric-card"><div class="metric-label">Total at 10 pts/day</div><div class="metric-value">${fmt(fixed+variable10)}</div></div>
+    <div class="metric-card featured"><div class="metric-label">Breakeven/day</div><div class="metric-value">${be} sessions</div><div class="metric-sub">At ₦${state.avg_fee.toLocaleString()}/session</div></div>`;
+  document.getElementById('ops-fixed-rows').innerHTML=`
+    <div class="data-row"><span class="dr-label">Rent (₦${state.rent_annual.toLocaleString()}/yr)</span><span class="dr-value neg">${fmt(rentMo)}</span></div>
+    <div class="data-row"><span class="dr-label">Employed physio salary</span><span class="dr-value neg">${fmt(state.physio_salary)}</span></div>
+    <div class="data-row"><span class="dr-label">Co-owner draw</span><span class="dr-value neg">${fmt(state.owner_draw)}</span></div>
+    <div class="data-row"><span class="dr-label">Front desk manager</span><span class="dr-value neg">${fmt(state.desk_salary)}</span></div>
+    <div class="data-row"><span class="dr-label">Generator fuel + PHCN</span><span class="dr-value neg warn">${fmt(state.fuel_monthly)}</span></div>
+    <div class="data-row"><span class="dr-label">Internet + phones</span><span class="dr-value neg">${fmt(state.internet_monthly)}</span></div>
+    <div class="data-row"><span class="dr-label">Software + maintenance</span><span class="dr-value neg">₦15,000</span></div>
+    <div class="data-row"><span class="dr-label">Bank charges + POS fees</span><span class="dr-value neg">₦15,000</span></div>
+    <div class="data-row subtotal"><span class="dr-label">Total fixed</span><span class="dr-value neg">${fmt(fixed)}</span></div>`;
+  document.getElementById('ops-variable-rows').innerHTML=`
+    <div class="data-row"><span class="dr-label">Consumables (₦${state.cons_per_session}/session × ${10*state.work_days})</span><span class="dr-value">${fmt(10*state.work_days*state.cons_per_session)}</span></div>
+    <div class="data-row"><span class="dr-label">Laundry (towels, sheets)</span><span class="dr-value">₦7,500</span></div>
+    <div class="data-row"><span class="dr-label">Marketing budget</span><span class="dr-value">${fmt(state.marketing_monthly)}</span></div>
+    <div class="data-row"><span class="dr-label">Referral gifts</span><span class="dr-value">₦17,500</span></div>
+    <div class="data-row subtotal"><span class="dr-label">Total variable (10 pts/day)</span><span class="dr-value warn">${fmt(variable10)}</span></div>`;
+  document.getElementById('be-sessions').textContent='~'+be+' sessions/day';
+  document.getElementById('be-fee').textContent=state.avg_fee.toLocaleString();
+  renderBEChart(fixed);
+  renderCostDonut(rentMo,fixed);
+}
+function renderBEChart(fixed){
+  const ctx=document.getElementById('breakevenChart');if(!ctx)return;
+  if(beC)beC.destroy();
+  const ss=[2,4,6,8,10,12,14,16,18];
+  const revD=ss.map(s=>Math.round(s*state.avg_fee*state.work_days));
+  const cosD=ss.map(s=>Math.round(fixed+s*state.work_days*state.cons_per_session+state.marketing_monthly+25000));
+  beC=new Chart(ctx,{type:'line',data:{labels:ss.map(s=>s+'/day'),datasets:[{label:'Revenue',data:revD,borderColor:'#1a4ba8',fill:false,tension:.1,pointRadius:4,borderWidth:2.5},{label:'Costs',data:cosD,borderColor:'#D85A30',fill:false,tension:.1,pointRadius:4,borderWidth:2.5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'₦'+Math.round(v/1000)+'k',font:{size:11}},grid:{color:'rgba(0,0,0,0.04)'}},x:{ticks:{font:{size:11}},grid:{display:false}}}}});
+}
+function renderCostDonut(rentMo,fixed){
+  const ctx=document.getElementById('costDonutChart');if(!ctx)return;
+  if(donutC)donutC.destroy();
+  const vals=[rentMo,state.physio_salary,state.fuel_monthly,state.desk_salary,state.internet_monthly,30000];
+  const labels=['Rent','Physio salary','Power/fuel','Front desk','Internet','Software & misc'];
+  const colors=['#1a4ba8','#0D2E6E','#D85A30','#C89B4A','#1a6e3e','#6B7280'];
+  donutC=new Chart(ctx,{type:'doughnut',data:{labels,datasets:[{data:vals,backgroundColor:colors,borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'60%'}});
+  document.getElementById('cost-donut-legend').innerHTML=labels.map((l,i)=>`<div style="display:flex;align-items:center;gap:7px;margin-bottom:7px;font-size:13px"><span style="width:10px;height:10px;border-radius:2px;background:${colors[i]};flex-shrink:0"></span><span style="color:var(--muted)">${l}</span><span style="margin-left:auto;font-weight:600;color:var(--ink)">${fmt(vals[i])}</span></div>`).join('');
+}
+function updateOps(){renderOps();}
+function updateSunkCosts(){renderSunk();}
+
+// ═══════════════════ RUNWAY ═══════════════════
+let rwSelM=0,rwBigC=null,cumulC=null;
+function renderRunway(){
+  const data=getMonthData();
+  const sel=document.getElementById('runway-months');
+  sel.innerHTML=data.map((d,i)=>`<button class="month-btn${i===rwSelM?' active':''}" onclick="selectRwMonth(${i},this)">${d.m}</button>`).join('');
+  selectRwMonthData(data,rwSelM);
+  renderRwBigChart(data);
+  renderCumulChart(data);
+}
+function selectRwMonth(i,btn){rwSelM=i;document.querySelectorAll('.month-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');selectRwMonthData(getMonthData(),i);}
+function selectRwMonthData(data,i){
+  const d=data[i];
+  const cum=data.slice(0,i+1).reduce((a,b)=>a+b.net,0);
+  const pc=d.net>=0?'pos':'neg';
+  document.getElementById('runway-metrics').innerHTML=`
+    <div class="metric-card${d.rev>getFixed()?' positive':''}"><div class="metric-label">${d.m} revenue</div><div class="metric-value">${fmt(d.rev)}</div><div class="metric-sub">${d.pts} patients/day</div></div>
+    <div class="metric-card negative"><div class="metric-label">Total costs</div><div class="metric-value">${fmt(d.total)}</div></div>
+    <div class="metric-card ${d.net>=0?'positive':'negative'}"><div class="metric-label">Net profit</div><div class="metric-value">${fmt(d.net)}</div></div>
+    <div class="metric-card ${cum>=0?'positive':'negative'}"><div class="metric-label">Cumulative net</div><div class="metric-value">${fmt(cum)}</div></div>`;
+  document.getElementById('runway-detail-card').innerHTML=`
+    <div class="data-card-title">${d.m} — ${d.label}</div>
+    <div class="data-row"><span class="dr-label">Patients per day</span><span class="dr-value">${d.pts}</span></div>
+    <div class="data-row"><span class="dr-label">Average session fee</span><span class="dr-value">${fmt(d.fee)}</span></div>
+    <div class="data-row"><span class="dr-label">Working days</span><span class="dr-value">${d.days}</span></div>
+    <div class="data-row"><span class="dr-label">Gross revenue</span><span class="dr-value pos">${fmt(d.rev)}</span></div>
+    <div class="data-row"><span class="dr-label">Fixed costs</span><span class="dr-value neg">-${fmt(d.fixed)}</span></div>
+    <div class="data-row"><span class="dr-label">Variable costs</span><span class="dr-value neg">-${fmt(d.variable)}</span></div>
+    <div class="data-row subtotal"><span class="dr-label">Net profit / loss</span><span class="dr-value ${pc}">${fmt(d.net)}</span></div>
+    <div class="data-row"><span class="dr-label">Profit margin</span><span class="dr-value ${pc}">${Math.round(d.net/d.rev*100)}%</span></div>`;
+}
+function renderRwBigChart(data){
+  const ctx=document.getElementById('runwayBigChart');if(!ctx)return;
+  if(rwBigC)rwBigC.destroy();
+  rwBigC=new Chart(ctx,{type:'line',data:{labels:data.map(d=>d.m),datasets:[{label:'Revenue',data:data.map(d=>d.rev),borderColor:'#1a4ba8',backgroundColor:'rgba(26,75,168,0.06)',fill:true,tension:.3,pointRadius:2,borderWidth:2},{label:'Costs',data:data.map(d=>d.total),borderColor:'#D85A30',borderDash:[5,4],fill:false,tension:.1,pointRadius:0,borderWidth:1.5},{label:'Net',data:data.map(d=>d.net),borderColor:'#C89B4A',fill:false,tension:.3,pointRadius:2,borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'₦'+Math.round(v/1000)+'k',font:{size:10}},grid:{color:'rgba(0,0,0,0.04)'}},x:{ticks:{font:{size:9},maxRotation:45,autoSkip:false},grid:{display:false}}}}});
+}
+function renderCumulChart(data){
+  const ctx=document.getElementById('cumulChart');if(!ctx)return;
+  if(cumulC)cumulC.destroy();
+  let cum=0;const cumData=data.map(d=>{cum+=d.net;return cum;});
+  cumulC=new Chart(ctx,{type:'line',data:{labels:data.map(d=>d.m),datasets:[{label:'Cumulative net',data:cumData,borderColor:'#1a4ba8',backgroundColor:'rgba(26,75,168,0.08)',fill:true,tension:.3,pointRadius:2,borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'₦'+Math.round(v/1000)+'k',font:{size:10}},grid:{color:'rgba(0,0,0,0.04)'}},x:{ticks:{font:{size:9},maxRotation:45,autoSkip:false},grid:{display:false}}}}});
+}
+function updateRunway(){renderRunway();}
+
+// ═══════════════════ OVERVIEW CHART ═══════════════════
+let ovC=null;
+function renderOverviewChart(){
+  const ctx=document.getElementById('overviewChart');if(!ctx)return;
+  const data=getMonthData().slice(0,12);
+  if(ovC)ovC.destroy();
+  ovC=new Chart(ctx,{type:'bar',data:{labels:data.map((_,i)=>'M'+(i+1)),datasets:[{label:'Revenue',data:data.map(d=>d.rev),backgroundColor:'rgba(26,75,168,0.18)',borderColor:'#1a4ba8',borderWidth:1,borderRadius:4,order:2},{label:'Net Profit',data:data.map(d=>d.net),type:'line',borderColor:'#C89B4A',fill:false,tension:.3,pointRadius:3,borderWidth:2,order:1}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'₦'+Math.round(v/1000)+'k',font:{size:11}},grid:{color:'rgba(0,0,0,0.04)'}},x:{ticks:{font:{size:11}},grid:{display:false}}}}});
+}
+
+// ═══════════════════ REV MIX ═══════════════════
+// ═══════════════════ PRICING DATA ═══════════════════
+let pricingData = [
+  {type:'Entry Point',amount:8000,unit:'75-min initial assessment',desc:'Comprehensive assessment + treatment. Written plan issued same day. The hook — make it extraordinary.',note:'Credits toward first package',featured:false},
+  {type:'Standard Session',amount:10000,unit:'per session, walk-in',desc:'45–60 min evidence-based session. Progress tracked against baseline. WhatsApp follow-up same day.',note:'Volume driver',featured:true},
+  {type:'6-Session Package',amount:52000,unit:'paid upfront',desc:'Save ₦8,000 vs walk-in. Patient commits. You get cash flow certainty. Offer at end of every assessment.',note:'Save ₦8,000 · Most popular',featured:true},
+  {type:'12-Session Package',amount:96000,unit:'paid upfront',desc:'Save ₦24,000. Best for chronic conditions, post-surgical rehab, stroke recovery, elderly patients.',note:'Save ₦24,000 · Best value',featured:false},
+  {type:'Geriatric Session',amount:14000,unit:'per session',desc:'Longer sessions, specialist protocols, gentle approach. Elderly patients are long-term, loyal clients.',note:'',featured:false},
+  {type:'Pediatric Session',amount:15000,unit:'per session',desc:'45–60 min specialist protocols. Families are loyal, long-term. High lifetime value segment.',note:'',featured:false},
+  {type:'Home Visit',amount:30000,unit:'within 5km · from Month 4',desc:'Premium service for elderly and post-surgical patients. Launch Month 4. Limit to 2/day initially.',note:'',featured:false},
+  {type:'Corporate Assessment',amount:120000,unit:'per company visit',desc:'Ergonomic audits for offices. One contract = 10–15% monthly revenue with no clinical chair time used.',note:'',featured:false},
+];
+
+function renderPricingGrid(){
+  const grid = document.getElementById('pricing-grid');
+  if(!grid) return;
+  grid.innerHTML = pricingData.map((p,i)=>`
+    <div class="price-card${p.featured?' featured':''}">
+      <div class="price-type">
+        <input class="price-editable" value="${p.type}" onblur="pricingData[${i}].type=this.value;savePricingData()" style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-weight:400">
+      </div>
+      <div class="price-amount" style="display:flex;align-items:baseline;gap:3px">
+        <span style="font-size:18px;font-family:'DM Serif Display',serif">₦</span>
+        <input class="price-editable" type="number" value="${p.amount}" onblur="pricingData[${i}].amount=+this.value;savePricingData()" style="font-family:'DM Serif Display',serif;font-size:24px;width:100%;color:var(--ink)">
+      </div>
+      <div class="price-unit">
+        <input class="price-editable" value="${p.unit}" onblur="pricingData[${i}].unit=this.value;savePricingData()" style="font-size:12px;color:var(--muted)">
+      </div>
+      <div class="price-desc">
+        <textarea class="price-editable" rows="3" onblur="pricingData[${i}].desc=this.value;savePricingData()" style="font-size:13px;color:var(--muted);resize:none;line-height:1.5">${p.desc}</textarea>
+      </div>
+      ${p.note?`<div class="price-saving"><input class="price-editable" value="${p.note}" onblur="pricingData[${i}].note=this.value;savePricingData()" style="font-size:12px;color:var(--positive);font-weight:600"></div>`:''}
+      <div style="margin-top:8px;display:flex;gap:6px">
+        <button onclick="pricingData[${i}].featured=!pricingData[${i}].featured;renderPricingGrid();savePricingData()" style="flex:1;font-size:11px;padding:4px 6px;border-radius:6px;border:1px solid var(--border);background:${p.featured?'var(--blue-mid)':'transparent'};color:${p.featured?'#fff':'var(--muted)'};cursor:pointer;font-family:'DM Sans',sans-serif">${p.featured?'★ Featured':'☆ Feature'}</button>
+        <button onclick="pricingData.splice(${i},1);renderPricingGrid();savePricingData()" style="font-size:11px;padding:4px 8px;border-radius:6px;border:1px solid var(--coral-light);background:var(--coral-light);color:var(--coral);cursor:pointer">×</button>
+      </div>
+    </div>`).join('');
+}
+
+function addPriceCard(){
+  pricingData.push({type:'New Service',amount:10000,unit:'per session',desc:'Describe this service.',note:'',featured:false});
+  renderPricingGrid();
+  savePricingData();
+}
+
+function savePricingData(){
+  showToast('✓ Pricing saved');
+  saveToFirebase();
+}
+
+let rmC=null;
+function renderRevMixChart(){
+  const ctx=document.getElementById('revMixChart');if(!ctx)return;
+  if(rmC)rmC.destroy();
+  const labels=['Walk-in sessions','Packages','Geriatric/Pediatric','Corporate','Home visits','Retail'];
+  const vals=[35,30,15,8,7,5];
+  const colors=['#0D2E6E','#1a4ba8','#C89B4A','#1a6e3e','#D85A30','#6B7280'];
+  rmC=new Chart(ctx,{type:'doughnut',data:{labels,datasets:[{data:vals,backgroundColor:colors,borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'62%'}});
+  document.getElementById('revmix-legend').innerHTML=labels.map((l,i)=>`<span style="display:flex;align-items:center;gap:4px"><span class="legend-dot" style="background:${colors[i]}"></span>${l} ${vals[i]}%</span>`).join('');
+}
+
+// ═══════════════════ RETAIL CHARTS ═══════════════════
+let retCompC=null,retMargC=null;
+function renderRetailCharts(){
+  const ctxC=document.getElementById('retailCompChart');
+  if(ctxC){if(retCompC)retCompC.destroy();
+  const data=getMonthData().slice(0,12);
+  const clinOnly=data.map(d=>d.rev);
+  const withRet=data.map(d=>Math.round(d.rev*(1+0.12)));
+  retCompC=new Chart(ctxC,{type:'line',data:{labels:data.map((_,i)=>'M'+(i+1)),datasets:[{label:'Clinical only',data:clinOnly,borderColor:'#6B7280',fill:false,tension:.3,pointRadius:2,borderWidth:1.5,borderDash:[4,3]},{label:'With retail',data:withRet,borderColor:'#1a4ba8',backgroundColor:'rgba(26,75,168,0.07)',fill:true,tension:.3,pointRadius:2,borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'₦'+Math.round(v/1000)+'k',font:{size:11}},grid:{color:'rgba(0,0,0,0.04)'}},x:{ticks:{font:{size:11}},grid:{display:false}}}}});}
+  const ctxM=document.getElementById('retailMarginChart');
+  if(ctxM){if(retMargC)retMargC.destroy();
+  retMargC=new Chart(ctxM,{type:'bar',data:{labels:['Crutches','Knee brace','Theraband','TENS unit','Compression','Foam roller'],datasets:[{label:'Margin %',data:[45,50,55,40,50,55],backgroundColor:'#1a4ba8',borderRadius:5,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{ticks:{callback:v=>v+'%',font:{size:11}},max:70,grid:{color:'rgba(0,0,0,0.04)'}},y:{ticks:{font:{size:11}},grid:{display:false}}}}});}
+}
+
+// ═══════════════════ REFERRAL CHART ═══════════════════
+let refC=null;
+function renderReferralChart(){
+  const ctx=document.getElementById('referralChart');if(!ctx)return;
+  if(refC)refC.destroy();
+  refC=new Chart(ctx,{type:'bar',data:{labels:['Teaching hospital','Pharmacies','Ortho surgeons','Gyms','Corporate HR','WhatsApp / Google'],datasets:[{label:'Est. patients/month by M6',data:[8,6,5,4,2,5],backgroundColor:['#0D2E6E','#1a4ba8','#1a4ba8','#C89B4A','#C89B4A','#1a6e3e'],borderRadius:5,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:11}},grid:{color:'rgba(0,0,0,0.04)'}},y:{ticks:{font:{size:12}},grid:{display:false}}}}});
+  document.getElementById('ref-legend').innerHTML=`<span><span class="legend-dot" style="background:#0D2E6E"></span>Hospital / pharmacy</span><span><span class="legend-dot" style="background:#C89B4A"></span>Gym / corporate</span><span><span class="legend-dot" style="background:#1a6e3e"></span>Digital</span>`;
+}
+
+// ═══════════════════ COMPETITION CHARTS ═══════════════════
+let compC=null,cpC=null,cwC=null,pillC=null;
+function renderCompCharts(){
+  const ctx=document.getElementById('compChart');
+  if(ctx){if(compC)compC.destroy();
+  compC=new Chart(ctx,{type:'bubble',data:{datasets:[{label:'Teaching Hospital',data:[{x:1.5,y:1.5,r:28}],backgroundColor:'rgba(216,90,48,0.45)',borderColor:'#D85A30',borderWidth:2},{label:'Private Clinic A',data:[{x:4.5,y:4.5,r:14}],backgroundColor:'rgba(200,155,74,0.45)',borderColor:'#C89B4A',borderWidth:2},{label:'Private Clinics B&C',data:[{x:3.5,y:3,r:10}],backgroundColor:'rgba(107,114,128,0.45)',borderColor:'#6B7280',borderWidth:2},{label:'Goshen (target)',data:[{x:9,y:9.5,r:14}],backgroundColor:'rgba(26,75,168,0.55)',borderColor:'#1a4ba8',borderWidth:2.5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11},padding:12,boxWidth:10}}},scales:{x:{min:0,max:11,title:{display:true,text:'Personalization score →',font:{size:11}},ticks:{display:false},grid:{color:'rgba(0,0,0,0.05)'}},y:{min:0,max:11,title:{display:true,text:'Access speed (same-week = 10) →',font:{size:11}},ticks:{display:false},grid:{color:'rgba(0,0,0,0.05)'}}}}});}
+  const ctxP=document.getElementById('compPriceChart');
+  if(ctxP){if(cpC)cpC.destroy();
+  cpC=new Chart(ctxP,{type:'bar',data:{labels:['Teaching Hospital','Private A','Private B&C','Goshen'],datasets:[{label:'Fee (₦)',data:[3500,7000,6000,10000],backgroundColor:['#D85A30','#C89B4A','#6B7280','#1a4ba8'],borderRadius:5,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'₦'+v.toLocaleString(),font:{size:11}},grid:{color:'rgba(0,0,0,0.04)'}},x:{ticks:{font:{size:11}},grid:{display:false}}}}});}
+  const ctxW=document.getElementById('compWaitChart');
+  if(ctxW){if(cwC)cwC.destroy();
+  cwC=new Chart(ctxW,{type:'bar',data:{labels:['Teaching Hospital','Private A','Private B&C','Goshen'],datasets:[{label:'Wait (days)',data:[14,7,5,2],backgroundColor:['#D85A30','#C89B4A','#6B7280','#1a4ba8'],borderRadius:5,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>v+' days',font:{size:11}},grid:{color:'rgba(0,0,0,0.04)'}},x:{ticks:{font:{size:11}},grid:{display:false}}}}});}
+  const ctxPi=document.getElementById('pillarsChart');
+  if(ctxPi){if(pillC)pillC.destroy();
+  pillC=new Chart(ctxPi,{type:'radar',data:{labels:['Access speed','Personalization','Outcome tracking','Digital presence','Package options','Communication'],datasets:[{label:'Goshen',data:[9,9,9,8,9,9],backgroundColor:'rgba(26,75,168,0.15)',borderColor:'#1a4ba8',borderWidth:2,pointBackgroundColor:'#1a4ba8'},{label:'Competitors (avg)',data:[3,4,2,3,3,3],backgroundColor:'rgba(200,155,74,0.1)',borderColor:'#C89B4A',borderWidth:1.5,pointBackgroundColor:'#C89B4A'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11},padding:12,boxWidth:10}}},scales:{r:{min:0,max:10,ticks:{stepSize:2,font:{size:10}},grid:{color:'rgba(0,0,0,0.08)'}}}}});}
+  renderRecoveryChart();
+}
+
+// ═══════════════════ CONTRACT RISK CHART ═══════════════════
+let crC=null;
+function renderContractRiskChart(){
+  const ctx=document.getElementById('contractRiskChart');if(!ctx)return;
+  if(crC)crC.destroy();
+  const months=['M1','M2','M3','M4','M5','M6','M7','M8','M9','M10','M11','M12'];
+  const withContract=getMonthData().slice(0,12).map(d=>d.rev);
+  const withoutContract=withContract.map((v,i)=>i>=6?Math.round(v*0.45):v);
+  crC=new Chart(ctx,{type:'line',data:{labels:months,datasets:[{label:'With contract (protected)',data:withContract,borderColor:'#1a4ba8',fill:false,tension:.3,pointRadius:3,borderWidth:2},{label:'Without contract (physio leaves M6)',data:withoutContract,borderColor:'#D85A30',borderDash:[5,4],fill:false,tension:.3,pointRadius:3,borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11},padding:12,boxWidth:10}}},scales:{y:{ticks:{callback:v=>'₦'+Math.round(v/1000)+'k',font:{size:11}},grid:{color:'rgba(0,0,0,0.04)'}},x:{ticks:{font:{size:11}},grid:{display:false}}}}});
+}
+
+// ═══════════════════ GRANT TIMELINE ═══════════════════
+let gtC=null;
+function renderGrantTimeline(){
+  const ctx=document.getElementById('grantTimelineChart');if(!ctx)return;
+  if(gtC)gtC.destroy();
+  gtC=new Chart(ctx,{type:'bar',data:{labels:['Outcome tracking','NHIS accreditation','Tony Elumelu','World Physio Fund','BOI Loan','USAID HSS','Gates Foundation'],datasets:[{label:'Start month',data:[1,3,10,12,8,18,24],backgroundColor:'rgba(26,75,168,0.15)',borderWidth:0},{label:'Duration (months)',data:[24,6,2,2,2,3,4],backgroundColor:['#1a6e3e','#1a4ba8','#C89B4A','#C89B4A','#1a4ba8','#0D2E6E','#0D2E6E'],borderRadius:4,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{stacked:true,ticks:{font:{size:11},callback:v=>'M'+v},grid:{color:'rgba(0,0,0,0.04)'},max:28},y:{stacked:true,ticks:{font:{size:11}},grid:{display:false}}}}});
+}
+
+// ═══════════════════ LAUNCH CHART ═══════════════════
+let launchC=null;
+function renderLaunchChart(){
+  const ctx=document.getElementById('launchChart');if(!ctx)return;
+  if(launchC)launchC.destroy();
+  launchC=new Chart(ctx,{type:'bar',data:{labels:['Pre-launch W1','Pre-launch W2','Pre-launch W3','Pre-launch W4','Month 1–2','Month 3','Month 4–5','Month 6','Month 8–10','Month 12'],datasets:[{label:'Activity intensity',data:[9,8,7,9,6,7,8,7,8,9],backgroundColor:['#D85A30','#D85A30','#C89B4A','#C89B4A','#1a4ba8','#1a4ba8','#1a6e3e','#1a6e3e','#0D2E6E','#0D2E6E'],borderRadius:5,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{display:false},x:{ticks:{font:{size:10}},grid:{display:false}}}}});
+}
+
+// ═══════════════════ SETTINGS ═══════════════════
+const settingsDefs=[
+  {key:'avg_fee',label:'Average session fee (₦)',desc:'Blended average across all session types.',prefix:'NGN',cb:()=>{updateOps();updateRunway();renderFinModel();renderProjections();}},
+  {key:'m1_patients',label:'Month 1 patients (day or week basis)',desc:'Use the per-day / per-week toggle on the Financial Model page.',prefix:'',cb:()=>{updateRunway();renderFinModel();renderProjections();}},
+  {key:'work_days',label:'Working days per month',desc:'Days the clinic operates (Mon–Fri + Saturdays).',prefix:'',cb:()=>{updateOps();updateRunway();renderFinModel();renderProjections();}},
+  {key:'max_patients',label:'Max patients/day (Year 2 target)',desc:'Full capacity with 2–3 physiotherapists.',prefix:'',cb:()=>{updateRunway();renderFinModel();renderProjections();}},
+  {key:'rent_annual',label:'Annual rent (₦)',desc:'Paid as one upfront sum in Nigeria.',prefix:'NGN',cb:()=>{updateSunkCosts();updateOps();updateRunway();renderFinModel();renderProjections();}},
+  {key:'physio_salary',label:'Employed physio salary (₦/month)',desc:'Monthly gross salary for employed physiotherapist.',prefix:'NGN',cb:()=>{updateSunkCosts();updateOps();updateRunway();renderFinModel();renderProjections();}},
+  {key:'desk_salary',label:'Front desk salary (₦/month)',desc:'Monthly salary for clinic coordinator.',prefix:'NGN',cb:()=>{updateOps();updateRunway();renderFinModel();renderProjections();}},
+  {key:'owner_draw',label:'Co-owner draw (₦/month)',desc:'Set to 0 for months 1–3 to protect cash flow.',prefix:'NGN',cb:()=>{updateOps();updateRunway();renderFinModel();renderProjections();}},
+  {key:'fuel_monthly',label:'Generator fuel + PHCN (₦/month)',desc:'Power cost — most underestimated line item.',prefix:'NGN',cb:()=>{updateOps();updateRunway();renderFinModel();renderProjections();}},
+  {key:'internet_monthly',label:'Internet + phones (₦/month)',desc:'Fiber internet and phone lines monthly cost.',prefix:'NGN',cb:()=>{updateOps();updateRunway();renderFinModel();renderProjections();}},
+  {key:'marketing_monthly',label:'Marketing budget (₦/month)',desc:'Google Ads, WhatsApp campaigns, referral gifts.',prefix:'NGN',cb:()=>{updateOps();updateRunway();renderFinModel();renderProjections();}},
+  {key:'cons_per_session',label:'Consumables per session (₦)',desc:'Gloves, gel, paper, disposables per session.',prefix:'NGN',cb:()=>{updateOps();updateRunway();renderFinModel();renderProjections();}},
+  {key:'retail_uplift',label:'Retail uplift (% of clinical revenue)',desc:'Revenue from product sales as % of session revenue.',prefix:'',cb:()=>{updateRunway();renderFinModel();renderProjections();}},
+  {key:'gen_cost',label:'Generator purchase cost (₦)',desc:'One-time cost of 5–6 kVA generator.',prefix:'NGN',cb:updateSunkCosts},
+  {key:'ultrasound_cost',label:'Ultrasound unit cost (₦)',desc:'Cost of therapeutic ultrasound machine.',prefix:'NGN',cb:updateSunkCosts},
+];
+function renderSettings(){
+  document.getElementById('settings-grid').innerHTML=settingsDefs.map(s=>`
+    <div class="ap-item">
+      <div class="ap-item-label">${s.label}</div>
+      <div class="ap-item-value" onclick="openEdit('${s.key}','${s.label}','${s.desc}',${state[s.key]},'${s.prefix}',function(){if(s&&s.cb)s.cb();renderSettings();rebuildAllModels();})">
+        ${s.prefix==='NGN'?'₦':''}<span id="settings-disp-${s.key}">${state[s.key].toLocaleString()}</span>${s.prefix===''?'':''} <span class="edit-pencil">✎</span>
+      </div>
+    </div>`).join('');
+}
+
+// Wrapper so Settings page openEdit calls work correctly
+function openEditFromSettings(key){
+  const s=settingsDefs.find(d=>d.key===key);
+  if(!s)return;
+  openEdit(s.key,s.label,s.desc,state[s.key],s.prefix,function(){
+    if(s.cb)s.cb();
+    renderSettings();
+    rebuildAllModels();
+  });
+}
+
+// ═══════════════════ TICK-ITEMS (STARTUP) ═══════════════════
+// tickItems replaced by setupItemsData above
+
+function renderTickList(){
+  const c=document.getElementById('sunk-tick-list');
+  if(!c)return;
+  c.innerHTML=setupItemsData.map((it,i)=>`
+    <div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--surface);font-size:13.5px">
+      <input type="checkbox" ${it.owned?'checked':''} onchange="setupItemsData[${i}].owned=this.checked;renderSunkEditable();saveToFirebase()" style="width:15px;height:15px;accent-color:var(--blue-mid);flex-shrink:0;cursor:pointer">
+      <span style="flex:1;color:${it.owned?'var(--muted)':'var(--ink-soft)'};text-decoration:${it.owned?'line-through':''}">${it.label}</span>
+      <span style="font-weight:600;color:${it.owned?'var(--muted)':'var(--ink)'};text-decoration:${it.owned?'line-through':''}">${fmt(it.cost)}</span>
+    </div>`).join('');
+  updateTickTotal();
+}
+function updateTickTotal(){
+  const total=setupItemsData.filter(i=>!i.owned).reduce((a,b)=>a+b.cost,0);
+  const el=document.getElementById('sunk-tick-total');
+  if(el)el.textContent=fmt(total);
+}
+
+
+// ═══════════════════ LAUNCH CHECKLIST ═══════════════════
+const launchItems = [
+  {phase:'Pre-launch — Week 1', items:[
+    {text:'Sign employment contract with physio 2 (notice clause + non-compete + records ownership)',done:false},
+    {text:'Register business name with CAC',done:false},
+    {text:'Confirm NMCN practicing certificates for both physiotherapists',done:false},
+    {text:'Open dedicated business bank account',done:false},
+    {text:'Sign co-owner profit-share agreement (documented)',done:false},
+    {text:'Pay annual rent upfront — secure the space first',done:false},
+    {text:'Get signed rent receipt from landlord',done:false},
+  ]},
+  {phase:'Pre-launch — Week 2', items:[
+    {text:'Order treatment beds (allow 1–2 week delivery)',done:false},
+    {text:'Order 5–6 kVA generator (not 2.5 kVA)',done:false},
+    {text:'Order inverter + battery backup system',done:false},
+    {text:'Order ultrasound therapy unit',done:false},
+    {text:'Order TENS / EMS machine',done:false},
+    {text:'Commission A/C units installation in both treatment rooms',done:false},
+    {text:'Begin renovation and fit-out',done:false},
+    {text:'Order rehab equipment (bands, weights, balls)',done:false},
+  ]},
+  {phase:'Pre-launch — Week 3', items:[
+    {text:'Submit Google Business Profile (7-day verify — start now)',done:false},
+    {text:'Set up WhatsApp Business number with auto-reply',done:false},
+    {text:'Create Instagram business account with 5 educational posts',done:false},
+    {text:'Set up scheduling software and test booking flow',done:false},
+    {text:'Purchase professional indemnity insurance',done:false},
+    {text:'Set up POS system and test payments',done:false},
+    {text:'Design and print branded referral cards + brochures',done:false},
+  ]},
+  {phase:'Pre-launch — Week 4', items:[
+    {text:'Personal visit to UCH — meet 3–5 physio department contacts',done:false},
+    {text:'Personal visit to LAUTECH — meet 1–2 physio contacts',done:false},
+    {text:'Visit 5 pharmacies within 1km — leave branded cards',done:false},
+    {text:'Visit 2 gyms — offer free monthly injury triage',done:false},
+    {text:'Visit 2 orthopedic surgeons — bring clinic profile + referral pads',done:false},
+    {text:'Host soft launch — 10–15 people from physios' personal networks',done:false},
+    {text:'Collect first 5 Google reviews from soft launch attendees',done:false},
+    {text:'Test full patient intake flow end-to-end',done:false},
+  ]},
+  {phase:'Month 1–2 — Survival mode', items:[
+    {text:'Co-owner takes zero draw — document as founder loan if needed',done:false},
+    {text:'Every patient receives a written treatment plan at session 1',done:false},
+    {text:'Offer 6-session package at end of every assessment',done:false},
+    {text:'Set up outcome tracking spreadsheet (VAS, ROM, satisfaction)',done:false},
+    {text:'Begin WhatsApp broadcast list from patient contacts',done:false},
+    {text:'Run weekly P&L check — revenue vs target',done:false},
+  ]},
+  {phase:'Month 3 — Review', items:[
+    {text:'Reach 20 Google reviews — actively ask patients at session 3–4',done:false},
+    {text:'First full P&L review — on track for Month 4–5 breakeven?',done:false},
+    {text:'Package conversion rate check — should be 20–25%',done:false},
+    {text:'Adjust marketing spend based on data',done:false},
+    {text:'Compile 3-month patient outcome summary',done:false},
+  ]},
+  {phase:'Months 4–6 — Growth', items:[
+    {text:'Co-owner begins modest draw (₦80–100k/month)',done:false},
+    {text:'Begin NHIS accreditation paperwork (3–6 month process)',done:false},
+    {text:'Formalize referral agreement with 1–2 UCH contacts',done:false},
+    {text:'Send first corporate ergonomic proposal',done:false},
+    {text:'Launch home visit service (2/day maximum)',done:false},
+    {text:'Compile 6-month outcome report',done:false},
+    {text:'Begin Tony Elumelu Foundation application draft',done:false},
+  ]},
+  {phase:'Months 8–10 — Scale', items:[
+    {text:'NHIS accreditation complete',done:false},
+    {text:'Submit BOI Healthcare SME Loan application',done:false},
+    {text:'Secure first corporate wellness contract',done:false},
+    {text:'Submit Tony Elumelu Foundation application',done:false},
+    {text:'Submit World Physiotherapy Development Fund application',done:false},
+    {text:'Review third physio hire — capacity vs cost',done:false},
+  ]},
+  {phase:'Month 12 — Year 1 close', items:[
+    {text:'Compile full year outcome report (anonymised)',done:false},
+    {text:'Year 1 P&L finalised and audited',done:false},
+    {text:'Decide: third physio hire or second location first?',done:false},
+    {text:'Begin USAID application prep with 12-month outcome data',done:false},
+    {text:'Set Year 2 targets — revenue, patients, grants',done:false},
+  ]},
+];
+
+function renderLaunchChecklist(){
+  const el = document.getElementById('launch-checklist');
+  if(!el) return;
+  let totalItems = 0, doneItems = 0;
+  el.innerHTML = launchItems.map((phase,pi)=>{
+    totalItems += phase.items.length;
+    doneItems += phase.items.filter(it=>it.done).length;
+    return `
+      <div class="cl-phase">${phase.phase}</div>
+      ${phase.items.map((it,ii)=>`
+        <div class="checklist-item${it.done?' done':''}" id="cli-${pi}-${ii}">
+          <input type="checkbox" class="cl-check" ${it.done?'checked':''} onchange="toggleLaunchItem(${pi},${ii},this.checked)">
+          <div class="cl-label">
+            <div class="cl-title">${it.text}</div>
+          </div>
+        </div>`).join('')}`;
+  }).join('');
+  const prog = document.getElementById('launch-progress');
+  if(prog) prog.textContent = `${doneItems} / ${totalItems} done`;
+}
+
+function toggleLaunchItem(pi,ii,checked){
+  launchItems[pi].items[ii].done = checked;
+  const row = document.getElementById(`cli-${pi}-${ii}`);
+  if(row) row.classList.toggle('done', checked);
+  let total=0,done=0;
+  launchItems.forEach(p=>{total+=p.items.length;done+=p.items.filter(i=>i.done).length;});
+  const prog = document.getElementById('launch-progress');
+  if(prog) prog.textContent = `${done} / ${total} done`;
+  showToast(checked ? '✓ Task complete' : 'Task unmarked');
+  saveToFirebase();
+}
+
+// ═══════════════════ MARKETING CHARTS ═══════════════════
+let mktgCC=null, mktgBC=null, mktgMC=null;
+function renderMarketingCharts(){
+  const ctxC=document.getElementById('mktgChannelChart');
+  if(ctxC){if(mktgCC)mktgCC.destroy();
+  const labels=['Referral network','Google (organic)','WhatsApp','Google Ads','Meta Ads','Walk-in'];
+  const vals=[35,25,20,10,5,5];
+  const colors=['#0D2E6E','#1a4ba8','#1D6AB0','#C89B4A','#6B7280','#1a6e3e'];
+  mktgCC=new Chart(ctxC,{type:'doughnut',data:{labels,datasets:[{data:vals,backgroundColor:colors,borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'60%'}});
+  document.getElementById('mktg-channel-legend').innerHTML=labels.map((l,i)=>`<span style="display:flex;align-items:center;gap:5px;font-size:12px"><span style="width:10px;height:10px;border-radius:2px;background:${colors[i]};flex-shrink:0"></span>${l} ${vals[i]}%</span>`).join('');}
+
+  const ctxB=document.getElementById('mktgBudgetChart');
+  if(ctxB){if(mktgBC)mktgBC.destroy();
+  mktgBC=new Chart(ctxB,{type:'bar',data:{labels:['Google Ads','Meta Ads','Referral gifts','Print materials','Events','Content'],datasets:[{data:[20000,10000,12000,5000,8000,5000],backgroundColor:['#1a4ba8','#0D2E6E','#C89B4A','#1a6e3e','#6B7280','#1D6AB0'],borderRadius:5,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'₦'+Math.round(v/1000)+'k',font:{size:10}},grid:{color:'rgba(0,0,0,0.04)'}},x:{ticks:{font:{size:10}},grid:{display:false}}}}});}
+
+  const ctxM=document.getElementById('mktgMonthChart');
+  if(ctxM){if(mktgMC)mktgMC.destroy();
+  const monthly=[125000,35000,35000,40000,45000,50000,55000,60000,65000,70000,70000,70000];
+  let cum=0;const cumData=monthly.map(v=>{cum+=v;return cum;});
+  mktgMC=new Chart(ctxM,{data:{labels:['M1','M2','M3','M4','M5','M6','M7','M8','M9','M10','M11','M12'],datasets:[{type:'bar',data:monthly,backgroundColor:'rgba(26,75,168,0.18)',borderColor:'#1a4ba8',borderWidth:1,borderRadius:4},{type:'line',data:cumData,borderColor:'#C89B4A',fill:false,tension:.3,pointRadius:3,borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'₦'+Math.round(v/1000)+'k',font:{size:10}},grid:{color:'rgba(0,0,0,0.04)'}},x:{ticks:{font:{size:11}},grid:{display:false}}}}});} 
+}
+
+// ═══════════════════ EDITABLE RETAIL CATALOGUE ═══════════════════
+let retailItems = [
+  {name:'Forearm crutches (pair)',sell:11500,margin:45},
+  {name:'Knee support braces',sell:8500,margin:50},
+  {name:'Cervical collar / neck support',sell:4500,margin:50},
+  {name:'Theraband resistance bands (set)',sell:3000,margin:55},
+  {name:'Heat / cold therapy packs',sell:2250,margin:55},
+  {name:'TENS home units',sell:20000,margin:40},
+  {name:'Compression stockings',sell:3500,margin:50},
+  {name:'Posture correctors',sell:4500,margin:48},
+  {name:'Foam rollers / massage balls',sell:3000,margin:55},
+];
+
+function renderRetailCatalogue(){
+  const el=document.getElementById('retail-catalogue');
+  if(!el)return;
+  el.innerHTML=`
+    <div style="display:grid;grid-template-columns:1fr 120px 100px 40px;gap:8px;padding:8px 0;font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);border-bottom:2px solid var(--border)">
+      <span>Product name</span><span style="text-align:right">Sell price (₦)</span><span style="text-align:right">Margin %</span><span></span>
+    </div>`+
+    retailItems.map((it,i)=>`
+    <div style="display:grid;grid-template-columns:1fr 120px 100px 40px;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid var(--surface)">
+      <input value="${it.name}" onblur="retailItems[${i}].name=this.value;showToast('✓ Retail saved');saveToFirebase()" style="border:1px solid var(--border);border-radius:6px;padding:5px 8px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--ink);width:100%;background:transparent;outline:none" onfocus="this.style.borderColor='var(--blue-mid)'" onblur2="this.style.borderColor='var(--border)'">
+      <input type="number" value="${it.sell}" onblur="retailItems[${i}].sell=+this.value;updateRetailTotal();showToast('✓ Retail saved');saveToFirebase()" style="border:1px solid var(--border);border-radius:6px;padding:5px 8px;font-size:13px;font-family:'DM Mono',monospace;color:var(--blue-mid);width:100%;text-align:right;background:transparent;outline:none" onfocus="this.style.borderColor='var(--blue-mid)'" onblur2="this.style.borderColor='var(--border)'">
+      <input type="number" value="${it.margin}" min="0" max="100" onblur="retailItems[${i}].margin=+this.value;updateRetailTotal();showToast('✓ Retail saved');saveToFirebase()" style="border:1px solid var(--border);border-radius:6px;padding:5px 8px;font-size:13px;font-family:'DM Mono',monospace;color:var(--positive);width:100%;text-align:right;background:transparent;outline:none" onfocus="this.style.borderColor='var(--blue-mid)'" onblur2="this.style.borderColor='var(--border)'">
+      <button onclick="removeRetailItem(${i})" style="background:var(--coral-light);border:none;color:var(--coral);border-radius:6px;width:32px;height:32px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center">×</button>
+    </div>`).join('');
+  updateRetailTotal();
+}
+function addRetailItem(){
+  retailItems.push({name:'New product',sell:5000,margin:50});
+  renderRetailCatalogue();
+  showToast('✓ Item added');
+  saveToFirebase();
+}
+function removeRetailItem(i){
+  retailItems.splice(i,1);
+  renderRetailCatalogue();
+  showToast('✓ Item removed');
+  saveToFirebase();
+}
+function updateRetailTotal(){
+  const avgSell=retailItems.reduce((a,b)=>a+b.sell,0)/Math.max(1,retailItems.length);
+  const buyRate=0.25;
+  const ptsPerDay=10, days=state.work_days;
+  const monthlyEst=Math.round(avgSell*buyRate*ptsPerDay*days);
+  const el=document.getElementById('retail-monthly-est');
+  if(el)el.textContent=fmt(monthlyEst);
+}
+
+// ═══════════════════ PACKAGE CONVERSION CHART ═══════════════════
+let pkgC=null;
+function renderPkgConvChart(){
+  const ctx=document.getElementById('pkgConvChart');if(!ctx)return;
+  if(pkgC)pkgC.destroy();
+  pkgC=new Chart(ctx,{type:'bar',data:{labels:['Walk-in (60%)','Package 6-sess (30%)','Package 12-sess (10%)'],datasets:[{data:[60,30,10],backgroundColor:['#6B7280','#1a4ba8','#0D2E6E'],borderRadius:5,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{ticks:{callback:v=>v+'%',font:{size:11}},max:80,grid:{color:'rgba(0,0,0,0.04)'}},y:{ticks:{font:{size:12}},grid:{display:false}}}}});
+}
+
+// ═══════════════════ RECOVERY TIME CHART ═══════════════════
+let recC=null;
+function renderRecoveryChart(){
+  const ctx=document.getElementById('recoveryChart');if(!ctx)return;
+  if(recC)recC.destroy();
+  recC=new Chart(ctx,{type:'bar',data:{labels:['Unstructured care (baseline)','Goshen Year 1','Goshen Year 2','Goshen Year 3 (target)'],datasets:[{label:'Avg sessions to discharge',data:[12,11.4,10.2,9.6],backgroundColor:['#6B7280','#1a4ba8','#0D2E6E','#C89B4A'],borderRadius:5,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{font:{size:11}},grid:{color:'rgba(0,0,0,0.04)'},title:{display:true,text:'Sessions to discharge',font:{size:11}}},x:{ticks:{font:{size:11}},grid:{display:false}}}}});
+}
+
+// ═══════════════════ FINANCIAL MODEL PAGE ═══════════════════
+let fmScenario='conservative';
+let fmBigC=null, fmScenC=null;
+
+function renderFinModel(){
+  // update display spans
+  ['rent_annual','physio_salary','desk_salary','fuel_monthly','avg_fee','marketing_monthly','internet_monthly','m1_patients'].forEach(k=>{
+    const el=document.getElementById('fm-'+k.replace('_annual','').replace('physio_','').replace('_monthly','').replace('_',''));
+    // simpler: just update all
+  });
+  document.getElementById('fm-rent') && (document.getElementById('fm-rent').textContent=state.rent_annual.toLocaleString());
+  document.getElementById('fm-salary') && (document.getElementById('fm-salary').textContent=state.physio_salary.toLocaleString());
+  document.getElementById('fm-desk') && (document.getElementById('fm-desk').textContent=state.desk_salary.toLocaleString());
+  document.getElementById('fm-fuel') && (document.getElementById('fm-fuel').textContent=state.fuel_monthly.toLocaleString());
+  document.getElementById('fm-fee') && (document.getElementById('fm-fee').textContent=state.avg_fee.toLocaleString());
+  document.getElementById('fm-mktg') && (document.getElementById('fm-mktg').textContent=state.marketing_monthly.toLocaleString());
+  document.getElementById('fm-internet') && (document.getElementById('fm-internet').textContent=state.internet_monthly.toLocaleString());
+  document.getElementById('fm-m1') && (document.getElementById('fm-m1').textContent=state.m1_patients);
+
+  const mults={conservative:0.75,base:1.0,optimistic:1.28};
+  const mult=mults[fmScenario];
+  const data=getMonthData();
+  const modData=data.map(d=>({...d,rev:Math.round(d.rev*mult),net:Math.round(d.rev*mult)-d.total}));
+  const m6=modData[5];
+  const fixed=getFixed();
+  const rentMo=Math.round(state.rent_annual/12);
+  const variable=Math.round(m6.rev*0.05+state.marketing_monthly);
+
+  const be=Math.ceil(fixed/state.avg_fee/state.work_days);
+  const y1net=modData.slice(0,12).reduce((a,b)=>a+b.net,0);
+  const y2net=modData.slice(12).reduce((a,b)=>a+b.net,0);
+
+  document.getElementById('fm-metrics') && (document.getElementById('fm-metrics').innerHTML=`
+    <div class="metric-card featured"><div class="metric-label">Breakeven / day</div><div class="metric-value">${be} sessions</div><div class="metric-sub">At ₦${state.avg_fee.toLocaleString()}</div></div>
+    <div class="metric-card positive"><div class="metric-label">Year 1 net (${fmScenario})</div><div class="metric-value">${fmt(y1net)}</div></div>
+    <div class="metric-card positive"><div class="metric-label">Year 2 net</div><div class="metric-value">${fmt(y2net)}</div></div>
+    <div class="metric-card warning"><div class="metric-label">Fixed costs/month</div><div class="metric-value">${fmt(fixed)}</div></div>`);
+
+  document.getElementById('fm-pl-card') && (document.getElementById('fm-pl-card').innerHTML=`
+    <div class="data-card-title">Month 6 P&L — ${fmScenario}</div>
+    <div class="data-row"><span class="dr-label">Clinical revenue (${m6.pts} pts × ${m6.days} days × ₦${state.avg_fee.toLocaleString()})</span><span class="dr-value pos">${fmt(Math.round(m6.pts*state.avg_fee*m6.days*mult))}</span></div>
+    <div class="data-row"><span class="dr-label">Retail revenue (~12% uplift)</span><span class="dr-value pos">${fmt(Math.round(m6.pts*state.avg_fee*m6.days*mult*0.12))}</span></div>
+    <div class="data-row"><span class="dr-label">Rent (÷ 12)</span><span class="dr-value neg">-${fmt(rentMo)}</span></div>
+    <div class="data-row"><span class="dr-label">Employed physio salary</span><span class="dr-value neg">-${fmt(state.physio_salary)}</span></div>
+    <div class="data-row"><span class="dr-label">Front desk salary</span><span class="dr-value neg">-${fmt(state.desk_salary)}</span></div>
+    <div class="data-row"><span class="dr-label">Generator fuel + PHCN</span><span class="dr-value neg">-${fmt(state.fuel_monthly)}</span></div>
+    <div class="data-row"><span class="dr-label">Internet + software + misc</span><span class="dr-value neg">-${fmt(state.internet_monthly+30000)}</span></div>
+    <div class="data-row"><span class="dr-label">Marketing</span><span class="dr-value neg">-${fmt(state.marketing_monthly)}</span></div>
+    <div class="data-row"><span class="dr-label">Variable (consumables)</span><span class="dr-value neg">-${fmt(m6.variable)}</span></div>
+    <div class="data-row subtotal"><span class="dr-label">Net profit / loss</span><span class="dr-value ${m6.net>=0?'pos':'neg'}">${fmt(m6.net)}</span></div>
+    <div class="data-row"><span class="dr-label">Margin</span><span class="dr-value ${m6.net>=0?'pos':'neg'}">${Math.round(m6.net/m6.rev*100)}%</span></div>`);
+
+  // scenario comparison chart
+  const cons=getMonthData().slice(0,12).map(d=>Math.round(d.rev*0.75));
+  const base=getMonthData().slice(0,12).map(d=>d.rev);
+  const opti=getMonthData().slice(0,12).map(d=>Math.round(d.rev*1.28));
+  const ctx1=document.getElementById('fmScenChart');
+  if(ctx1){if(fmScenC)fmScenC.destroy();
+  fmScenC=new Chart(ctx1,{type:'line',data:{labels:base.map((_,i)=>'M'+(i+1)),datasets:[{label:'Conservative',data:cons,borderColor:'#6B7280',fill:false,tension:.3,pointRadius:2,borderWidth:1.5,borderDash:[4,3]},{label:'Base',data:base,borderColor:'#1a4ba8',fill:false,tension:.3,pointRadius:2,borderWidth:2},{label:'Optimistic',data:opti,borderColor:'#1a6e3e',fill:false,tension:.3,pointRadius:2,borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'₦'+Math.round(v/1000)+'k',font:{size:10}},grid:{color:'rgba(0,0,0,0.04)'}},x:{ticks:{font:{size:10}},grid:{display:false}}}}});}
+
+  // big 24-month chart
+  const ctx2=document.getElementById('fmBigChart');
+  if(ctx2){if(fmBigC)fmBigC.destroy();
+  fmBigC=new Chart(ctx2,{type:'line',data:{labels:data.map(d=>d.m),datasets:[{label:'Revenue',data:modData.map(d=>d.rev),borderColor:'#1a4ba8',backgroundColor:'rgba(26,75,168,0.06)',fill:true,tension:.3,pointRadius:2,borderWidth:2},{label:'Costs',data:data.map(d=>d.total),borderColor:'#D85A30',borderDash:[5,4],fill:false,tension:.1,pointRadius:0,borderWidth:1.5},{label:'Net',data:modData.map(d=>d.net),borderColor:'#C89B4A',fill:false,tension:.3,pointRadius:2,borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'₦'+Math.round(v/1000)+'k',font:{size:10}},grid:{color:'rgba(0,0,0,0.04)'}},x:{ticks:{font:{size:9},maxRotation:45,autoSkip:false},grid:{display:false}}}}});}
+}
+function setFmScenario(s,el){
+  fmScenario=s;
+  document.querySelectorAll('#page-finmodel .tab-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  renderFinModel();
+}
+
+// ═══════════════════ PROFIT PROJECTIONS PAGE ═══════════════════
+let projSelM=0, projCumulC2=null;
+function renderProjections(){
+  const data=getMonthData();
+  // summary metrics
+  const y1rev=data.slice(0,12).reduce((a,b)=>a+b.rev,0);
+  const y1cost=data.slice(0,12).reduce((a,b)=>a+b.total,0);
+  const y1net=y1rev-y1cost;
+  const y2rev=data.slice(12).reduce((a,b)=>a+b.rev,0);
+  const y2cost=data.slice(12).reduce((a,b)=>a+b.total,0);
+  const y2net=y2rev-y2cost;
+  document.getElementById('proj-summary-metrics').innerHTML=`
+    <div class="metric-card featured"><div class="metric-label">Year 1 gross</div><div class="metric-value">${fmt(y1rev)}</div></div>
+    <div class="metric-card ${y1net>=0?'positive':'negative'}"><div class="metric-label">Year 1 net</div><div class="metric-value">${fmt(y1net)}</div></div>
+    <div class="metric-card featured"><div class="metric-label">Year 2 gross</div><div class="metric-value">${fmt(y2rev)}</div></div>
+    <div class="metric-card positive"><div class="metric-label">Year 2 net</div><div class="metric-value">${fmt(y2net)}</div></div>`;
+  document.getElementById('proj-y1-rev').textContent=fmt(y1rev);
+  document.getElementById('proj-y1-cost').textContent=fmt(y1cost);
+  document.getElementById('proj-y1-net').textContent=fmt(y1net);
+  document.getElementById('proj-y1-net').className='dr-value '+(y1net>=0?'pos':'neg');
+  document.getElementById('proj-y1-margin').textContent=Math.round(y1net/y1rev*100)+'%';
+  document.getElementById('proj-y2-rev').textContent=fmt(y2rev);
+  document.getElementById('proj-y2-cost').textContent=fmt(y2cost);
+  document.getElementById('proj-y2-net').textContent=fmt(y2net);
+  document.getElementById('proj-y2-margin').textContent=Math.round(y2net/y2rev*100)+'%';
+
+  // month buttons
+  const btns=document.getElementById('proj-months');
+  if(btns && btns.children.length===0){
+    data.forEach((d,i)=>{
+      const b=document.createElement('button');
+      b.className='month-btn'+(i===0?' active':'');
+      b.textContent=d.m;
+      b.onclick=()=>{
+        document.querySelectorAll('#proj-months .month-btn').forEach(x=>x.classList.remove('active'));
+        b.classList.add('active');
+        projSelM=i;
+        showProjMonth(data,i);
+      };
+      btns.appendChild(b);
+    });
+  }
+  showProjMonth(data,projSelM);
+  renderProjCumulChart(data);
+}
+function showProjMonth(data,i){
+  const d=data[i];
+  const cum=data.slice(0,i+1).reduce((a,b)=>a+b.net,0);
+  const pc=d.net>=0?'pos':'neg';
+  document.getElementById('proj-detail-card').innerHTML=`
+    <div style="font-size:13px;font-weight:600;color:var(--blue);margin-bottom:12px">${d.m} — ${d.label}</div>
+    <div class="data-row"><span class="dr-label">Patients per day</span><span class="dr-value">${d.pts}</span></div>
+    <div class="data-row"><span class="dr-label">Average session fee</span><span class="dr-value">${fmt(d.fee)}</span></div>
+    <div class="data-row"><span class="dr-label">Working days</span><span class="dr-value">${d.days}</span></div>
+    <div class="data-row"><span class="dr-label">Gross revenue</span><span class="dr-value pos">${fmt(d.rev)}</span></div>
+    <div class="data-row"><span class="dr-label">Fixed costs</span><span class="dr-value neg">-${fmt(d.fixed)}</span></div>
+    <div class="data-row"><span class="dr-label">Variable costs</span><span class="dr-value neg">-${fmt(d.variable)}</span></div>
+    <div class="data-row subtotal"><span class="dr-label">Net profit / loss</span><span class="dr-value ${pc}">${fmt(d.net)}</span></div>
+    <div class="data-row"><span class="dr-label">Profit margin</span><span class="dr-value ${pc}">${Math.round(d.net/d.rev*100)}%</span></div>
+    <div class="data-row"><span class="dr-label">Cumulative net (since launch)</span><span class="dr-value ${cum>=0?'pos':'neg'}">${fmt(cum)}</span></div>`;
+}
+function renderProjCumulChart(data){
+  const ctx=document.getElementById('projCumulChart');if(!ctx)return;
+  if(projCumulC2)projCumulC2.destroy();
+  let cum=0;const cumData=data.map(d=>{cum+=d.net;return cum;});
+  projCumulC2=new Chart(ctx,{data:{labels:data.map(d=>d.m),datasets:[{type:'bar',label:'Revenue',data:data.map(d=>d.rev),backgroundColor:'rgba(26,75,168,0.15)',borderColor:'#1a4ba8',borderWidth:1,borderRadius:4},{type:'line',label:'Cumulative net',data:cumData,borderColor:'#C89B4A',fill:false,tension:.3,pointRadius:3,borderWidth:2.5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'₦'+Math.round(v/1000)+'k',font:{size:10}},grid:{color:'rgba(0,0,0,0.04)'}},x:{ticks:{font:{size:9},maxRotation:45,autoSkip:false},grid:{display:false}}}}});
+}
+
+// ═══════════════════ INIT ═══════════════════
+// ═══════════════════ FIREBASE INTEGRATION ═══════════════════
+let db = null;
+let fbConnected = false;
+let syncTimeout = null;
+const FB_CONFIG_KEY = 'goshen_fb_config';
+
+function setSyncStatus(status) {
+  const dot = document.getElementById('sync-dot');
+  const label = document.getElementById('sync-label');
+  if (!dot || !label) return;
+  const styles = {
+    connected:   { bg:'#1a6e3e', text:'Synced' },
+    saving:      { bg:'#C89B4A', text:'Saving...' },
+    loading:     { bg:'#1a4ba8', text:'Loading...' },
+    error:       { bg:'#D85A30', text:'Sync error' },
+    offline:     { bg:'#E5E7EB', text:'Not connected' },
+  };
+  const s = styles[status] || styles.offline;
+  dot.style.background = s.bg;
+  label.textContent = s.text;
+}
+
+function connectFirebase() {
+  const apiKey       = document.getElementById('fb-apiKey')?.value?.trim();
+  const projectId    = document.getElementById('fb-projectId')?.value?.trim();
+  const dbUrl        = document.getElementById('fb-dbUrl')?.value?.trim();
+  const authDomain   = document.getElementById('fb-authDomain')?.value?.trim();
+  const storageBucket = document.getElementById('fb-storageBucket')?.value?.trim();
+  const statusEl     = document.getElementById('fb-connect-status');
+
+  if (!apiKey || !projectId || !dbUrl) {
+    if(statusEl) statusEl.textContent = 'Please fill in API Key, Project ID, and Database URL at minimum.';
+    return;
+  }
+
+  const config = { apiKey, authDomain, projectId, storageBucket, databaseURL: dbUrl };
+
+  // Save config to localStorage so it persists across refreshes
+  try { localStorage.setItem(FB_CONFIG_KEY, JSON.stringify(config)); } catch(e) {}
+
+  initFirebaseWithConfig(config);
+  if(statusEl) statusEl.textContent = 'Connecting...';
+}
+
+function initFirebaseWithConfig(config) {
+  // Config already initialised in <head> — just get the db reference
+  try {
+    db = firebase.database();
+    fbConnected = true;
+    setSyncStatus('loading');
+    startRealtimeSync();
+    const statusEl = document.getElementById('fb-connect-status');
+    if (statusEl) statusEl.textContent = '✓ Connected! Config is hardcoded — always auto-connects.';
+  } catch(err) {
+    setSyncStatus('error');
+    console.error('Firebase connection error:', err);
+    const statusEl = document.getElementById('fb-connect-status');
+    if (statusEl) statusEl.textContent = 'Error: ' + err.message;
+  }
+}
+
+function startRealtimeSync() {
+  if (!db) return;
+  const ref = db.ref('goshen/data');
+
+  ref.on('value', (snapshot) => {
+    const data = snapshot.val();
+    if (!data) {
+      saveToFirebase();
+      setSyncStatus('connected');
+      return;
+    }
+
+    // Apply financial state
+    if (data.state) {
+      Object.assign(state, data.state);
+      syncDisplayValues();
+    }
+
+    // Apply sessionBasis
+    if (data.sessionBasis && data.sessionBasis !== sessionBasis) {
+      sessionBasis = data.sessionBasis;
+      applySessionBasisUI();
+    }
+
+    // Apply setupItemsData
+    if (data.setupItems) {
+      setupItemsData.length = 0;
+      data.setupItems.forEach(i => setupItemsData.push(i));
+    }
+
+    // Apply workingItemsData
+    if (data.workingItems) {
+      workingItemsData.length = 0;
+      data.workingItems.forEach(i => workingItemsData.push(i));
+    }
+
+    // Apply retailItems
+    if (data.retailItems) {
+      retailItems.length = 0;
+      data.retailItems.forEach(i => retailItems.push(i));
+    }
+
+    // Apply pricingData
+    if (data.pricingData) {
+      pricingData.length = 0;
+      data.pricingData.forEach(i => pricingData.push(i));
+    }
+
+    // Apply launch checklist state
+    if (data.launchItems) {
+      data.launchItems.forEach((phase, pi) => {
+        if (launchItems[pi] && phase.items) {
+          phase.items.forEach((it, ii) => {
+            if (launchItems[pi].items[ii]) {
+              launchItems[pi].items[ii].done = it.done;
+            }
+          });
+        }
+      });
+    }
+
+    setSyncStatus('connected');
+    refreshActivePageCharts();
+  });
+}
+
+function refreshActivePageCharts() {
+  const active = document.querySelector('.page.active');
+  if (!active) return;
+  const id = active.id.replace('page-','');
+  renderOverviewChart();
+  if (id === 'sunk') renderSunkEditable();
+  if (id === 'ops') renderOps();
+  if (id === 'runway') renderRunway();
+  if (id === 'finmodel') renderFinModel();
+  if (id === 'projections') renderProjections();
+  if (id === 'pricing') { renderPricingGrid(); renderRevMixChart(); renderPkgConvChart(); }
+  if (id === 'retail') { renderRetailCharts(); renderRetailCatalogue(); }
+  if (id === 'launch') renderLaunchChecklist();
+  if (id === 'settings') renderSettings();
+}
+
+function saveToFirebase() {
+  if (!db || !fbConnected) return;
+  setSyncStatus('saving');
+  clearTimeout(syncTimeout);
+  syncTimeout = setTimeout(() => {
+    db.ref('goshen/data').set({
+      state: { ...state },
+      sessionBasis,
+      setupItems: setupItemsData.map(i => ({...i})),
+      workingItems: workingItemsData.map(i => ({...i})),
+      retailItems: retailItems.map(i => ({...i})),
+      pricingData: pricingData.map(i => ({...i})),
+      launchItems: launchItems.map(phase => ({
+        phase: phase.phase,
+        items: phase.items.map(it => ({text: it.text, done: it.done}))
+      })),
+      lastSaved: new Date().toISOString(),
+    }).then(() => {
+      setSyncStatus('connected');
+    }).catch((err) => {
+      setSyncStatus('error');
+      console.error('Save error:', err);
+    });
+  }, 800); // debounce 800ms
+}
+
+function syncDisplayValues() {
+  // Update all display spans that show state values
+  Object.keys(state).forEach(key => {
+    const d = document.getElementById('disp-' + key);
+    if (d) d.textContent = state[key].toLocaleString();
+    const sd = document.getElementById('settings-disp-' + key);
+    if (sd) sd.textContent = state[key].toLocaleString();
+    // Financial model spans
+    const fmMap = { rent_annual:'fm-rent', physio_salary:'fm-salary', desk_salary:'fm-desk',
+                    owner_draw:'fm-owner', fuel_monthly:'fm-fuel', marketing_monthly:'fm-mktg',
+                    internet_monthly:'fm-internet', avg_fee:'fm-fee', cons_per_session:'fm-cons',
+                    retail_uplift:'fm-retail', m1_patients:'fm-m1' };
+    if (fmMap[key]) {
+      const el = document.getElementById(fmMap[key]);
+      if (el) el.textContent = state[key].toLocaleString();
+    }
+  });
+}
+
+function applySessionBasisUI() {
+  const btnDay = document.getElementById('btn-per-day');
+  const btnWeek = document.getElementById('btn-per-week');
+  const label = document.getElementById('m1-label');
+  const unit = document.getElementById('m1-unit');
+  if (btnDay) {
+    btnDay.style.background = sessionBasis==='day' ? 'var(--blue-mid)' : 'transparent';
+    btnDay.style.color = sessionBasis==='day' ? '#fff' : 'var(--muted)';
+    btnDay.style.borderColor = sessionBasis==='day' ? 'var(--blue-mid)' : 'var(--border)';
+  }
+  if (btnWeek) {
+    btnWeek.style.background = sessionBasis==='week' ? 'var(--blue-mid)' : 'transparent';
+    btnWeek.style.color = sessionBasis==='week' ? '#fff' : 'var(--muted)';
+    btnWeek.style.borderColor = sessionBasis==='week' ? 'var(--blue-mid)' : 'var(--border)';
+  }
+  if (label) label.textContent = 'Month 1 patients/' + sessionBasis;
+  if (unit) unit.textContent = '/' + sessionBasis;
+}
+
+// saveEdit, setSessionBasis, addRetailItem, removeRetailItem
+// all call saveToFirebase() and showToast() directly — no wrappers needed.
+
+// Page titles update
+const pageTitlesExtra = { 'firebase-setup': 'Deploy & Real-Time Sync' };
+
+// Auto-load saved Firebase config from localStorage on startup
+function tryAutoConnect() {
+  // Config is hardcoded — connect directly using the already-initialised app
+  try {
+    db = firebase.database();
+    fbConnected = true;
+    setSyncStatus('loading');
+    startRealtimeSync();
+  } catch(err) {
+    setSyncStatus('error');
+    console.error('Firebase auto-connect error:', err);
+  }
+}
+
+// ═══════════════════ INIT ═══════════════════
+window.addEventListener('load',()=>{
+  renderOverviewChart();
+  renderTickList();
+  renderPricingGrid();
+  renderLaunchChecklist();
+  setTimeout(()=>{renderRevMixChart();},200);
+  setTimeout(()=>{renderContractRiskChart();},300);
+  setTimeout(()=>{renderRetailCatalogue();},100);
+  setTimeout(()=>{ tryAutoConnect(); }, 500);
+});
+</script>
+<div id="toast"><span class="t-dot"></span><span id="toast-msg">Saved</span></div>
+</body>
+</html>
